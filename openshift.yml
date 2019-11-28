@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: "apicast-example-policy"
-message: "APIcast Example Policy"
+  name: "apicast-my-policy"
+message: "APIcast My Policy"
 objects:
 
 - apiVersion: v1
@@ -19,15 +19,15 @@ objects:
     annotations:
     labels:
       app: apicast
-    name: apicast-example-policy
+    name: apicast-my-policy
   spec:
     output:
       to:
         kind: ImageStreamTag
-        name: apicast-policy:example
+        name: apicast-policy:my
     source:
       git:
-        uri: https://github.com/3scale/apicast-example-policy.git
+        uri: https://github.com/ypreiger/3scale-policy-jsoncheck.git
         ref: 'master'
       type: Git
     strategy:
@@ -62,11 +62,13 @@ objects:
       images:
         - from:
             kind: ImageStreamTag
-            name: 'apicast-policy:example'
+            name: 'apicast-policy:my'
           paths:
             # copy policy source code into the new image
             - destinationDir: policies
-              sourcePath: /opt/app-root/policies/example
+              sourcePath: /opt/app-root/policies/xmlcheck
+            - destinationDir: policies
+              sourcePath: /opt/app-root/policies/jsoncheck
             # copy also installed dependencies to the policy folder, so they are vendored
             # - destinationDir: policies/example/0.1/resty/
             #   sourcePath: /opt/app-root/src/lua_modules/share/lua/5.1/resty/iputils.lua

@@ -1,0 +1,11 @@
+{
+  "$schema": "http://apicast.io/policy-v1/schema#manifest#",
+  "name": "Input JSON check",
+  "summary": "Check JSON object.",
+  "description": "This policy verify json input object.",
+  "version": "0.1",
+  "configuration": {
+    "type": "object",
+    "properties": { }
+  }
+}
