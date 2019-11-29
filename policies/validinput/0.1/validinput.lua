@@ -1,6 +1,6 @@
 local setmetatable = setmetatable
 
-local _M = require('apicast.policy').new('Example', '0.1')
+local _M = require('apicast.policy').new('Validate Input Object type', '0.1')
 local mt = { __index = _M }
 
 function _M.new()

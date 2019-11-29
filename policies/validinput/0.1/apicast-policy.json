@@ -1,0 +1,30 @@
+{
+  "$schema": "http://apicast.io/policy-v1/schema#manifest#",
+  "name": "Validate Input Object type",
+  "summary": "Input Object type validation.",
+  "description": "This policy validating input object type: json, xml, any",
+  "version": "0.1",
+  "configuration": {
+    "type": "object",
+    "properties": {
+      "dropdown_input": {
+        "type": "string",
+        "description": "Look, I'm a dropdown selector",
+        "oneOf": [
+          {
+            "enum": ["any"],
+            "description": "any object allowed"
+          },
+          {
+            "enum": ["xml"],
+            "description": "valid xml object"
+          },
+          {
+            "enum": ["json"],
+            "description": "valid json object"
+          }
+        ]
+      }
+    }
+  }
+}
