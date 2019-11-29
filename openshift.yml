@@ -4,7 +4,6 @@ metadata:
   name: "apicast-custom-policies"
 message: "APIcast Custom Policies"
 objects:
-
 - apiVersion: v1
   kind: ImageStream
   metadata:
@@ -65,15 +64,17 @@ objects:
             name: 'apicast-policies:latest'
           paths:
             # copy policy source code into the new image
+            - destinationDir: policies/
+              sourcePath: /opt/app-root/policies/validinput
             - destinationDir: policies
-              sourcePath: /opt/app-root/policies
-#            - destinationDir: policies
-#              sourcePath: /opt/app-root/policies/jsoncheck
-#            - destinationDir: policies
-#              sourcePath: /opt/app-root/policies/validinput
+              sourcePath: /opt/app-root/policies/jsoncheck
+            - destinationDir: policies
+              sourcePath: /opt/app-root/policies/validinput
             # copy also installed dependencies to the policy folder, so they are vendored
-            - destinationDir: dependencies
-              sourcePath: /opt/app-root/src/lua_modules/share/lua/5.1/resty/iputils.lua
+            - destinationDir: /usr/local/share/lua/5.1/resty/
+              sourcePath: policies/dependencies/
+            - destinationDir: policies/validinput/0.1/resty/
+              sourcePath: /usr/local/share/lua/5.1/resty/
       type: Dockerfile
       dockerfile: |
         FROM scratch
@@ -93,4 +94,4 @@ parameters:
 - name: AMP_RELEASE
   required: true
   description: AMP Version (eg. 2.2.0-GA)
-  value: 2.7
+
