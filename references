@@ -1,0 +1,11 @@
+https://github.com/jdesgats/ljsonschema
+use http://lua-users.org/wiki/LuaXml
+
+https://github.com/bungle/lua-resty-validation
+ https://luarocks.org/modules/romaboy/rjson
+  http://lua-users.org/wiki/JsonModules
+  https://www.tutorialspoint.com/lua/lua_error_handling.htm
+  
+  try parse XML -> then is an XML
+  try parse Json -> the is josn
+  Otherwise Unparsable document
