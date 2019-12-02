@@ -29,7 +29,9 @@ function _M:rewrite()
   ngx.log(ngx.WARN, "function _M:rewrite=========>>>>> INPUT VALIDATOR config = ", self.mode)
 
 
-local t_json = [{"menu": {   "id": "file",   "value": "File",   "popup": {    "menuitem": [      {"value": "New", "onclick": "CreateNewDoc()"},      {"value": "Open", "onclick": "OpenDoc()"},      {"value": "Close", "onclick": "CloseDoc()"}    ]  }}}]
+local t_json = [[
+ {"menu": {   "id": "file",   "value": "File",   "popup": {    "menuitem": [      {"value": "New", "onclick": "CreateNewDoc()"},      {"value": "Open", "onclick": "OpenDoc()"},      {"value": "Close", "onclick": "CloseDoc()"}    ]  }}}
+    ]]
 
   local t_body = t_json  
   local validator
