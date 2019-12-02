@@ -9,7 +9,7 @@
     "properties": {
       "dropdown_input": {
         "type": "string",
-        "description": "Look, I'm a dropdown selector",
+        "description": "Choose input object type",
         "oneOf": [
           {
             "enum": ["any"],
