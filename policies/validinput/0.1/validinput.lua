@@ -28,7 +28,7 @@ function _M:rewrite()
   -- change the request before it reaches upstream
   ngx.log(ngx.WARN, "function _M:rewrite=========>>>>> INPUT VALIDATOR config = ", self.mode)
 
-  local t_xml = [[
+  local t_xml = '[[
     <!DOCTYPE glossary PUBLIC "-//OASIS//DTD DocBook V3.1//EN">
  <glossary><title>example glossary</title>
   <GlossDiv><title>S</title>
@@ -48,8 +48,8 @@ languages such as DocBook.</para>
    </GlossList>
   </GlossDiv>
  </glossary>
-    ]]
-local t_json = [[
+    ]]'
+local t_json = '[[
     {
     "glossary": {
         "title": "example glossary",
@@ -73,7 +73,7 @@ local t_json = [[
     }
 }
 
-    ]]
+    ]]'
 
   local t_body = t_json  
   local validator
