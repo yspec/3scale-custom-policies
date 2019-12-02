@@ -32,6 +32,7 @@ function _M:rewrite()
   else
     ngx.log(ngx.INFO, "NO VALIDATOR config = ", self.mode)
   end
+    end
 end
 
 function _M:access()
