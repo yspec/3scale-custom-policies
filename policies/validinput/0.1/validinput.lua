@@ -1,18 +1,10 @@
 local setmetatable = setmetatable
 
-local _M = require('apicast.policy').new('Validate Input Object type', '0.1')
+local _M = require('apicast.policy').new('Example', '0.1')
 local mt = { __index = _M }
 
--- local xml_validator = require('xml_validator')
--- local json_validator = require('json_validator')
-
---local xml_validator = { validate = function(xml) { ngx.log(ngx.ERR, xml) } }
---local json_validator = { validate = function(xml) { ngx.log(ngx.ERR, xml) } }
-
-function _M.new(config)
-  local self = setmetatable({}, mt)
-  self.mode = config.dropdown_input
-  return self
+function _M.new()
+  return setmetatable({}, mt)
 end
 
 function _M:init()
@@ -24,35 +16,7 @@ function _M:init_worker()
 end
 
 function _M:rewrite()
-  ngx.log(ngx.INFO, "=========>>>>> INPUT VALIDATOR config = ", self.mode)
-
-  local validator
-  if self.mode = 'xml' then
-    --validator = xml_validator
-    ngx.log(ngx.INFO, "IF =========>>>>> INPUT XML VALIDATOR config = ", self.mode)
-  else if self.mode = 'json' then
-    --validator = json_validator
-    ngx.log(ngx.INFO, "IF =========>>>>> INPUT JSON VALIDATOR config = ", self.mode)
-  else
-    ngx.log(ngx.INFO, "NO VALIDATOR config = ", self.mode)
-  end
-
-  local xml = [[
-    <people>
-      <person type="natural">
-        <name>Manoel</name>
-        <city>Palmas-TO</city>
-      </person>
-      <person type="legal">
-        <name>University of Brasília</name>
-        <city>Brasília-DF</city>
-      </person>
-    </people>
-    ]]
-
-    
-  --validator.validate(xml)
-
+  -- change the request before it reaches upstream
 end
 
 function _M:access()
