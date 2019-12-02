@@ -20,7 +20,18 @@ end
 
 function _M:rewrite()
   -- change the request before it reaches upstream
-   ngx.log(ngx.INFO, "=========>>>>> INPUT VALIDATOR config = ", self.mode) 
+  ngx.log(ngx.INFO, "=========>>>>> INPUT VALIDATOR config = ", self.mode)
+
+  local validator
+  if self.mode = 'xml' then
+    --validator = xml_validator
+    ngx.log(ngx.INFO, "IF =========>>>>> INPUT XML VALIDATOR config = ", self.mode)
+  else if self.mode = 'json' then
+    --validator = json_validator
+    ngx.log(ngx.INFO, "IF =========>>>>> INPUT JSON VALIDATOR config = ", self.mode)
+  else
+    ngx.log(ngx.INFO, "NO VALIDATOR config = ", self.mode)
+  end
 end
 
 function _M:access()
