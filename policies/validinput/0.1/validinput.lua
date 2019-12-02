@@ -111,7 +111,7 @@ end
 
 
 function validJson(contents)
-    --contents = contents:trim()
+    contents = contents:trim()
     if string.sub(contents, 1, 1) ~= "{" and string.sub(contents, 1, 1) ~= "[" then
         return false
     end
@@ -119,7 +119,7 @@ function validJson(contents)
 end
 
 function isValid(contents)
-    --contents = contents:trim()
+    contents = contents:trim()
 
     if contents == "{}" or contents == "[]" or contents == "\"\"" then
         return true
