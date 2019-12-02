@@ -26,7 +26,7 @@ function _M:rewrite()
   if self.mode == 'xml' then
     --validator = xml_validator
     ngx.log(ngx.INFO, "IF =========>>>>> INPUT XML VALIDATOR config = ", self.mode)
-  else if self.mode = 'json' then
+  else if self.mode == 'json' then
     --validator = json_validator
     ngx.log(ngx.INFO, "IF =========>>>>> INPUT JSON VALIDATOR config = ", self.mode)
   else
