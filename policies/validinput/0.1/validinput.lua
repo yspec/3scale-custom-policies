@@ -32,11 +32,24 @@ function _M:rewrite()
 local t_json = [[
  {"menu": {   "id": "file",   "value": "File",   "popup": {    "menuitem": [      {"value": "New", "onclick": "CreateNewDoc()"},      {"value": "Open", "onclick": "OpenDoc()"},      {"value": "Close", "onclick": "CloseDoc()"}    ]  }}}
     ]]
+local xml = [[
+    <people>
+      <person type="natural">
+        <name>Manoel</name>
+        <city>Palmas-TO</city>
+      </person>
+      <person type="legal">
+        <name>University of Brasília</name>
+        <city>Brasília-DF</city>
+      </person>
+    </people>
+    ]]
 
   local t_body = t_json  
   local validator
   if self.mode == 'xml' then
-    ---validator = xml_validator
+    validator = xml_validator
+        validator.validate(xml)
     ngx.log(ngx.WARN, "IF =========>>>>> INPUT XML VALIDATOR config = ", self.mode)
   elseif self.mode == 'json' then
     validator = json_validator
