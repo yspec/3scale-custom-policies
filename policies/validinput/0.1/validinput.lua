@@ -3,8 +3,11 @@ local setmetatable = setmetatable
 local _M = require('apicast.policy').new('Example', '0.1')
 local mt = { __index = _M }
 
-function _M.new()
-  return setmetatable({}, mt)
+function _M.new(config)
+  local self = setmetatable({}, mt)
+  self.mode = config.dropdown_input
+  ngx.log(ngx.INFO, "=========>>>>> INPUT VALIDATOR config = ", self.mode)  
+  return self
 end
 
 function _M:init()
