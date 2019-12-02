@@ -1,8 +1,14 @@
 local setmetatable = setmetatable
 
-local _M = require('apicast.policy').new('Example', '0.1')
+local _M = require('apicast.policy').new('Validate Input Object type', '0.1')
 local mt = { __index = _M }
 
+-- local xml_validator = require('xml_validator')
+-- local json_validator = require('json_validator')
+
+local xml_validator = { validate = function(xml) { ngx.log(ngx.ERR, xml) } }
+local json_validator = { validate = function(xml) { ngx.log(ngx.ERR, xml) } }
+    
 function _M.new(config)
   local self = setmetatable({}, mt)
   self.mode = config.dropdown_input
