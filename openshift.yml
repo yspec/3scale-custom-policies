@@ -69,7 +69,7 @@ objects:
             - destinationDir: policies
               sourcePath: /opt/app-root/policies/jsoncheck
             - destinationDir: policies
-              sourcePath: /opt/app-root/policies/validinput
+              sourcePath: /opt/app-root/policies/xmlcheck
             # copy also installed dependencies to the policy folder, so they are vendored
             - destinationDir: /usr/local/share/lua/5.1/resty/
               sourcePath: policies/dependencies/
