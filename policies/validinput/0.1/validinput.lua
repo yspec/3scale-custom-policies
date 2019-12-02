@@ -22,7 +22,7 @@ function _M:rewrite()
   -- change the request before it reaches upstream
   ngx.log(ngx.WARN, "function _M:rewrite=========>>>>> INPUT VALIDATOR config = ", self.mode)
 
-  local validator
+--  local validator
   if self.mode = 'xml' then
     --validator = xml_validator
     ngx.log(ngx.INFO, "IF =========>>>>> INPUT XML VALIDATOR config = ", self.mode)
