@@ -29,33 +29,22 @@ function _M:rewrite()
   ngx.log(ngx.WARN, "function _M:rewrite=========>>>>> INPUT VALIDATOR config = ", self.mode)
 
 
-local t_json = {"menu": {
-  "id": "file",
-  "value": "File",
-  "popup": {
-    "menuitem": [
-      {"value": "New", "onclick": "CreateNewDoc()"},
-      {"value": "Open", "onclick": "OpenDoc()"},
-      {"value": "Close", "onclick": "CloseDoc()"}
-    ]
-  }
-}}
+local t_json = [{"menu": {   "id": "file",   "value": "File",   "popup": {    "menuitem": [      {"value": "New", "onclick": "CreateNewDoc()"},      {"value": "Open", "onclick": "OpenDoc()"},      {"value": "Close", "onclick": "CloseDoc()"}    ]  }}}]
 
   local t_body = t_json  
   local validator
   if self.mode == 'xml' then
     ---validator = xml_validator
     ngx.log(ngx.WARN, "IF =========>>>>> INPUT XML VALIDATOR config = ", self.mode)
-  else if self.mode == 'json' then
+  elseif self.mode == 'json' then
     --validator = json_validator
     ngx.log(ngx.WARN, "IF =========>>>>> INPUT JSON VALIDATOR config = ", self.mode)
-        ngx.log(ngx.WARN, "=========>>>>> INPUT JSON to check", t_body)
-    if validJson (t_body) then
-        ngx.log(ngx.WARN, "=========>>>>> INPUT JSON is valid", t_body)
-    else
-        ngx.log(ngx.ERR, "=========>>>>> INPUT JSON is NOT valid", t_body)
-    end				
-  end
+            ngx.log(ngx.WARN, "=========>>>>> INPUT JSON to check", t_body)
+        if validJson (t_body) then
+            ngx.log(ngx.WARN, "=========>>>>> INPUT JSON is valid", t_body)
+        else
+            ngx.log(ngx.ERR, "=========>>>>> INPUT JSON is NOT valid", t_body)
+        end				
     end
 --    if validator.validate(t_body) then
 --            ngx.log(ngx.WARN, "VALIDATOR AGREE TO LET YOU PASS", self.mode)
