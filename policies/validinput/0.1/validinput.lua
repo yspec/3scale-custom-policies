@@ -29,7 +29,7 @@ function _M:rewrite()
   ngx.log(ngx.WARN, "function _M:rewrite=========>>>>> INPUT VALIDATOR config = ", self.mode)
 
 
-local t_json = '[[
+local t_json = [[
     {
     "glossary": {
         "title": "example glossary",
@@ -53,7 +53,7 @@ local t_json = '[[
     }
 }
 
-    ]]'
+    ]]
 
   local t_body = t_json  
   local validator
@@ -63,6 +63,7 @@ local t_json = '[[
   else if self.mode == 'json' then
     --validator = json_validator
     ngx.log(ngx.WARN, "IF =========>>>>> INPUT JSON VALIDATOR config = ", self.mode)
+        ngx.log(ngx.WARN, "=========>>>>> INPUT JSON to check", t_body)
     if validJson (t_body) then
         ngx.log(ngx.WARN, "=========>>>>> INPUT JSON is valid", t_body)
     else
