@@ -21,7 +21,7 @@ end
 -- @treturn boolean True if the XML is valid. False otherwise.
 -- @treturn string Error message only when the XML is invalid.
 function _M.validate(xml)
-
+ ngx.log(ngx.WARN, "=========>>>>>INTO XML VALIDATOR:", xml) 
   --Instantiates the XML parser
   local parser = xml2lua.parser(handler)
   parser:parse(xml)
