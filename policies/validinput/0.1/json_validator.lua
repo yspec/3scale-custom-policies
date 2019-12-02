@@ -3,7 +3,15 @@
 
 -- local jsonschema = require('jsonschema')
 
+local setmetatable = setmetatable
 local _M = { }
+local mt = { __index = _M }
+
+function _M.new()
+  local self = setmetatable({}, mt)
+  ngx.log(ngx.WARN, "=========>>>>>NEW JSON VALIDATOR")  
+  return self
+end
 
 --- Validate a JSON object
 -- Checks if JSON content is valid according to the given schema.
