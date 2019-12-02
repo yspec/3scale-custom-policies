@@ -25,7 +25,7 @@ end
 
 
 
-function validJson(contents)
+function validJ(contents)
     ngx.log(ngx.WARN, "=========>>>>>JSON VALIDATIN STARTED") 
     contents = contents:trim()
     if string.sub(contents, 1, 1) ~= "{" and string.sub(contents, 1, 1) ~= "[" then
