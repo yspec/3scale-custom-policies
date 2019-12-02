@@ -21,7 +21,7 @@ end
 -- @treturn string Error message only when the JSON is invalid.
 function _M.validate(json_content)
       ngx.log(ngx.WARN, "=========>>>>> WELCOME INTO JSON VALIDATOR")
-      ngx.log(ngx.WARN, "json_content: ". json_content)
+      ngx.log(ngx.WARN, "json_content: ", json_content)
 
   -- local validator = jsonschema.generate_validator(config_schema or {})
   return true --validator(json_content or {})
