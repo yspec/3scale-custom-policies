@@ -6,8 +6,8 @@ local mt = { __index = _M }
 -- local xml_validator = require('xml_validator')
 -- local json_validator = require('json_validator')
 
-local xml_validator = { validate = function(xml) { ngx.log(ngx.ERR, xml) } }
-local json_validator = { validate = function(xml) { ngx.log(ngx.ERR, xml) } }
+--local xml_validator = { validate = function(xml) { ngx.log(ngx.ERR, xml) } }
+--local json_validator = { validate = function(xml) { ngx.log(ngx.ERR, xml) } }
     
 function _M.new(config)
   local self = setmetatable({}, mt)
@@ -28,16 +28,65 @@ function _M:rewrite()
   -- change the request before it reaches upstream
   ngx.log(ngx.WARN, "function _M:rewrite=========>>>>> INPUT VALIDATOR config = ", self.mode)
 
+  local t_xml = [[
+    <!DOCTYPE glossary PUBLIC "-//OASIS//DTD DocBook V3.1//EN">
+ <glossary><title>example glossary</title>
+  <GlossDiv><title>S</title>
+   <GlossList>
+    <GlossEntry ID="SGML" SortAs="SGML">
+     <GlossTerm>Standard Generalized Markup Language</GlossTerm>
+     <Acronym>SGML</Acronym>
+     <Abbrev>ISO 8879:1986</Abbrev>
+     <GlossDef>
+      <para>A meta-markup language, used to create markup
+languages such as DocBook.</para>
+      <GlossSeeAlso OtherTerm="GML">
+      <GlossSeeAlso OtherTerm="XML">
+     </GlossDef>
+     <GlossSee OtherTerm="markup">
+    </GlossEntry>
+   </GlossList>
+  </GlossDiv>
+ </glossary>
+    ]]
+local t_json = [[
+    {
+    "glossary": {
+        "title": "example glossary",
+		"GlossDiv": {
+            "title": "S",
+			"GlossList": {
+                "GlossEntry": {
+                    "ID": "SGML",
+					"SortAs": "SGML",
+					"GlossTerm": "Standard Generalized Markup Language",
+					"Acronym": "SGML",
+					"Abbrev": "ISO 8879:1986",
+					"GlossDef": {
+                        "para": "A meta-markup language, used to create markup languages such as DocBook.",
+						"GlossSeeAlso": ["GML", "XML"]
+                    },
+					"GlossSee": "markup"
+                }
+            }
+        }
+    }
+}
+
+    ]]
+
+  local t_body = t_json  
   local validator
   if self.mode == 'xml' then
     validator = xml_validator
-    ngx.log(ngx.INFO, "IF =========>>>>> INPUT XML VALIDATOR config = ", self.mode)
+    ngx.log(ngx.WARN, "IF =========>>>>> INPUT XML VALIDATOR config = ", self.mode)
   else if self.mode == 'json' then
     validator = json_validator
-    ngx.log(ngx.INFO, "IF =========>>>>> INPUT JSON VALIDATOR config = ", self.mode)
-  else
-    ngx.log(ngx.INFO, "NO VALIDATOR config = ", self.mode)
+    ngx.log(ngx.WARN, "IF =========>>>>> INPUT JSON VALIDATOR config = ", self.mode)
   end
+    end
+    if validator.validate(t_body) then
+            ngx.log(ngx.WARN, "VALIDATOR AGREE TO LET YOU PASS", self.mode)
     end
 end
 
