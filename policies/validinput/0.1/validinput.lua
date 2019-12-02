@@ -320,10 +320,10 @@ function numberCheck(contents)
         return false
     end
     
-    local contentCheck1 = tostring(string.match("1.42", "[\-\+]?[0-9]*[\.[0-9]+]?") ~= nil)
-    local contentCheck2 = (string.match(contents, "[\-\+]?[0-9]*[\.[0-9]+]?") == contents)
-    
-    return (contentCheck1 and contentCheck2)
+--    local contentCheck1 = tostring(string.match("1.42", "[\-\+]?[0-9]*[\.[0-9]+]?") ~= nil)
+--    local contentCheck2 = (string.match(contents, "[\-\+]?[0-9]*[\.[0-9]+]?") == contents)
+--    return (contentCheck1 and contentCheck2)
+      return true
 end
 
 function boolCheck(contents)
