@@ -11,7 +11,14 @@ local _M = { }
 -- @tparam table config_schema JSON schema
 -- @treturn boolean True if the JSON is valid. False otherwise.
 -- @treturn string Error message only when the JSON is invalid.
-function _M.validate(json_content, config_schema)
+function _M.validate(json_content)
+      ngx.log(ngx.WARN, "=========>>>>> WELCOME INTO JSON VALIDATOR")
+
+  -- local validator = jsonschema.generate_validator(config_schema or {})
+  return true --validator(json_content or {})
+end
+
+function _M.validateschema(json_content, config_schema)
       ngx.log(ngx.WARN, "=========>>>>> WELCOME INTO JSON VALIDATOR")
 
   -- local validator = jsonschema.generate_validator(config_schema or {})
