@@ -6,7 +6,7 @@ local mt = { __index = _M }
 function _M.new(config)
   local self = setmetatable({}, mt)
   self.mode = config.dropdown_input
-  ngx.log(ngx.WARN, "=========>>>>> INPUT VALIDATOR config = ", self.mode)  
+  ngx.log(ngx.WARN, "function _M.new =========>>>>> INPUT VALIDATOR config = ", self.mode)  
   return self
 end
 
@@ -20,18 +20,18 @@ end
 
 function _M:rewrite()
   -- change the request before it reaches upstream
-  ngx.log(ngx.WARN, "=========>>>>> INPUT VALIDATOR config = ", self.mode)
+  ngx.log(ngx.WARN, "function _M:rewrite=========>>>>> INPUT VALIDATOR config = ", self.mode)
 
---  local validator
---  if self.mode = 'xml' then
+  local validator
+  if self.mode = 'xml' then
     --validator = xml_validator
---    ngx.log(ngx.INFO, "IF =========>>>>> INPUT XML VALIDATOR config = ", self.mode)
+    ngx.log(ngx.INFO, "IF =========>>>>> INPUT XML VALIDATOR config = ", self.mode)
 --  else if self.mode = 'json' then
     --validator = json_validator
 --    ngx.log(ngx.INFO, "IF =========>>>>> INPUT JSON VALIDATOR config = ", self.mode)
 --  else
 --    ngx.log(ngx.INFO, "NO VALIDATOR config = ", self.mode)
---  end
+  end
 end
 
 function _M:access()
