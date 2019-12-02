@@ -20,6 +20,7 @@ end
 
 function _M:rewrite()
   -- change the request before it reaches upstream
+   ngx.log(ngx.INFO, "=========>>>>> INPUT VALIDATOR config = ", self.mode) 
 end
 
 function _M:access()
