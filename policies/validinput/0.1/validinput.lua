@@ -6,8 +6,8 @@ local mt = { __index = _M }
 -- local xml_validator = require('xml_validator')
 -- local json_validator = require('json_validator')
 
-local xml_validator = { validate = function(xml) { ngx.log(ngx.ERR, xml) } }
-local json_validator = { validate = function(xml) { ngx.log(ngx.ERR, xml) } }
+--local xml_validator = { validate = function(xml) { ngx.log(ngx.ERR, xml) } }
+--local json_validator = { validate = function(xml) { ngx.log(ngx.ERR, xml) } }
 
 function _M.new(config)
   local self = setmetatable({}, mt)
@@ -28,10 +28,10 @@ function _M:rewrite()
 
   local validator
   if self.mode = 'xml' then
-    validator = xml_validator
+    --validator = xml_validator
     ngx.log(ngx.INFO, "IF =========>>>>> INPUT XML VALIDATOR config = ", self.mode)
   else if self.mode = 'json' then
-    validator = json_validator
+    --validator = json_validator
     ngx.log(ngx.INFO, "IF =========>>>>> INPUT JSON VALIDATOR config = ", self.mode)
   else
     ngx.log(ngx.INFO, "NO VALIDATOR config = ", self.mode)
@@ -51,7 +51,7 @@ function _M:rewrite()
     ]]
 
     
-  validator.validate(xml)
+  --validator.validate(xml)
 
 end
 
