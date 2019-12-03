@@ -3,7 +3,7 @@ local setmetatable = setmetatable
 local _M = require('apicast.policy').new('Validate Input Object type', '0.1')
 local mt = { __index = _M }
 
---local xml_validator = require('validinput.xml_validator')
+local xml_validator = require('validinput.xml_validator')
 local json_validator = require('validators.json_validator')
 
 --local xml_validator = { validate = function(xml) { ngx.log(ngx.ERR, xml) } }
