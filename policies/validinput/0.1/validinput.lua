@@ -33,6 +33,7 @@ local t_json = [[
  {"menu": {   "id": "file",   "value": "File",   "popup": {    "menuitem": [      {"value": "New", "onclick": "CreateNewDoc()"},      {"value": "Open", "onclick": "OpenDoc()"},      {"value": "Close", "onclick": "CloseDoc()"}    ]  }}}
     ]]
 local t_body = ngx.req.read_body()
+ngx.log(ngx.WARN, "=========>>>>> INPUT BODY:", t_body)    
 local validator
   if self.mode == 'xml' then
     validator = xml_validator
