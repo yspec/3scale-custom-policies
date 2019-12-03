@@ -49,8 +49,12 @@ local xml = [[
   local validator
   if self.mode == 'xml' then
     validator = xml_validator
-        validator.validate(xml)
-    ngx.log(ngx.WARN, "IF =========>>>>> INPUT XML VALIDATOR config = ", self.mode)
+        if validator.validate(t_body) then
+            ngx.log(ngx.WARN, "=========>>>>> INPUT XML is valid", t_body)
+        else
+            ngx.log(ngx.ERR, "=========>>>>> INPUT XML is NOT valid", t_body)
+        end	        
+        
   elseif self.mode == 'json' then
     validator = json_validator
     ngx.log(ngx.WARN, "IF =========>>>>> INPUT JSON VALIDATOR config = ", self.mode)
