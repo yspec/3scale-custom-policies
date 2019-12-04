@@ -1,10 +1,10 @@
 --- XMl Validator
 -- Validates an XML against a schema.
 
-local xmllib = --require('xml2lua')
+local xmllib = require('xml2lua')
 
 --Uses a handler that converts the XML to a Lua table
-local handler = --require("xmlhandler.tree")
+local handler = require("xmlhandler.tree")
 
 local setmetatable = setmetatable
 local _M = { }
