@@ -4,6 +4,15 @@ metadata:
   name: "apicast-custom-policies"
 message: "APIcast Custom Policies"
 objects:
+
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+    labels:
+      app: apicast
+    name: amp-custom-apicast
+
 - apiVersion: v1
   kind: ImageStream
   metadata:
@@ -66,6 +75,7 @@ objects:
             # copy policy source code into the new image
             - destinationDir: policies/
               sourcePath: /opt/app-root/policies/validinput
+            - destinationDir: xml2lua/
               sourcePath: /opt/app-root/dependencies/xml2lua/xml2lua.lua
             - destinationDir: xml2lua/
               sourcePath: /opt/app-root/dependencies/xml2lua/XmlParser.lua
@@ -92,4 +102,3 @@ parameters:
 - name: AMP_RELEASE
   required: true
   description: AMP Version (eg. 2.2.0-GA)
-
