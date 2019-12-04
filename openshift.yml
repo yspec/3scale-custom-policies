@@ -75,14 +75,6 @@ objects:
             # copy policy source code into the new image
             - destinationDir: policies/
               sourcePath: /opt/app-root/policies/validinput
-            - destinationDir: xml2lua/
-              sourcePath: /opt/app-root/dependencies/xml2lua/xml2lua.lua
-            - destinationDir: xml2lua/
-              sourcePath: /opt/app-root/dependencies/xml2lua/XmlParser.lua
-            - destinationDir: xml2lua/
-              sourcePath: /opt/app-root/dependencies/xml2lua/xml2lua-1.3-2.rockspec
-            - destinationDir: xml2lua/xmlhandler
-              sourcePath: /opt/app-root/dependencies/xml2lua/xmlhandler              
       type: Dockerfile
       dockerfile: |
         FROM scratch
