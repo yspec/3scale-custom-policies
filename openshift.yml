@@ -18,7 +18,7 @@ objects:
     annotations:
     labels:
       app: apicast
-    name: apicast-custom-policies-builder
+    name: apicast-policies-fromgit-builder
   spec:
     output:
       to:
@@ -48,7 +48,7 @@ objects:
     output:
       to:
         kind: ImageStreamTag
-        name: 'amp-apicast:latest'
+        name: 'amp-custom-apicast:latest'
     postCommit:
       args:
         - '--test'
@@ -66,15 +66,13 @@ objects:
             # copy policy source code into the new image
             - destinationDir: policies/
               sourcePath: /opt/app-root/policies/validinput
-            - destinationDir: policies
-              sourcePath: /opt/app-root/policies/jsoncheck
-            - destinationDir: policies
-              sourcePath: /opt/app-root/policies/xmlcheck
-            # copy also installed dependencies to the policy folder, so they are vendored
-            - destinationDir: /usr/local/share/lua/5.1/resty/
-              sourcePath: policies/dependencies/
-            - destinationDir: policies/validinput/0.1/resty/
-              sourcePath: /usr/local/share/lua/5.1/resty/
+              sourcePath: /opt/app-root/dependencies/xml2lua/xml2lua.lua
+            - destinationDir: xml2lua/
+              sourcePath: /opt/app-root/dependencies/xml2lua/XmlParser.lua
+            - destinationDir: xml2lua/
+              sourcePath: /opt/app-root/dependencies/xml2lua/xml2lua-1.3-2.rockspec
+            - destinationDir: xml2lua/xmlhandler
+              sourcePath: /opt/app-root/dependencies/xml2lua/xmlhandler              
       type: Dockerfile
       dockerfile: |
         FROM scratch
@@ -84,7 +82,7 @@ objects:
       dockerStrategy:
         from:
           kind: ImageStreamTag
-          name: 'amp-apicast:${AMP_RELEASE}'
+          name: 'apicast-policies:latest'
       type: Docker
     triggers:
       - type: ConfigChange
