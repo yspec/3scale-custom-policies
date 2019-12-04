@@ -23,7 +23,6 @@ end
 
 function _M:rewrite()
   -- change the request before it reaches upstream
-  ngx.log(ngx.WARN, "=========>>>>> INPUT VALIDATOR type = ", self.mode)
 ngx.req.read_body()
 local t_body = ngx.req.get_body_data()
 ngx.log(ngx.WARN, "=========>>>>> INPUT BODY:", t_body)    
