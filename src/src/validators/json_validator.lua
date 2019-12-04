@@ -25,7 +25,7 @@ function _M.validate(json_content)
       ngx.log(ngx.WARN, "json_content: ", json_content)
   -- local validator = jsonschema.generate_validator(config_schema or {})
   --local res = jsonvalidator.validJ(json_content) --validator(json_content or {})
-  local res = jsonvalidator1.decode(json_content)
+  local res = jsonvalidator.decode(json_content)
   return res
 end
 
