@@ -5,14 +5,11 @@ local mt = { __index = _M }
 
 local xml_validator = require('validators.xml_validator')
 local json_validator = require('validators.json_validator')
-
---local xml_validator = { validate = function(xml) { ngx.log(ngx.ERR, xml) } }
---local json_validator = { validate = function(xml) { ngx.log(ngx.ERR, xml) } }
     
 function _M.new(config)
   local self = setmetatable({}, mt)
   self.mode = config.dropdown_input
-  ngx.log(ngx.WARN, "function _M.new =========>>>>> INPUT VALIDATOR config = ", self.mode)  
+  ngx.log(ngx.WARN, "===new===>>>>> INPUT VALIDATOR type = ", self.mode)  
   return self
 end
 
@@ -26,36 +23,23 @@ end
 
 function _M:rewrite()
   -- change the request before it reaches upstream
-  ngx.log(ngx.WARN, "function _M:rewrite=========>>>>> INPUT VALIDATOR config = ", self.mode)
+  ngx.log(ngx.WARN, "=========>>>>> INPUT VALIDATOR type = ", self.mode)
 ngx.req.read_body()
-
-local t_json = [[
- {"menu": {   "id": "file",   "value": "File",   "popup": {    "menuitem": [      {"value": "New", "onclick": "CreateNewDoc()"},      {"value": "Open", "onclick": "OpenDoc()"},      {"value": "Close", "onclick": "CloseDoc()"}    ]  }}}
-    ]]
 local t_body = ngx.req.get_body_data()
 ngx.log(ngx.WARN, "=========>>>>> INPUT BODY:", t_body)    
 local validator
-  if self.mode == 'xml' then
+  if not (t_body == nil or self.mode == nil or self.mode == 'any') then
+    if self.mode == 'xml' then
     validator = xml_validator
-        if validator.validate(t_body) then
-            ngx.log(ngx.WARN, "=========>>>>> INPUT XML is valid", t_body)
-        else
-            ngx.log(ngx.ERR, "=========>>>>> INPUT XML is NOT valid", t_body)
-        end	        
-        
-  elseif self.mode == 'json' then
+    elseif self.mode == 'json' then
     validator = json_validator
-    ngx.log(ngx.WARN, "IF =========>>>>> INPUT JSON VALIDATOR config = ", self.mode)
-            ngx.log(ngx.WARN, "=========>>>>> INPUT JSON to check", t_body)
-        if json_validator.validate(t_body) then
-            ngx.log(ngx.WARN, "=========>>>>> INPUT JSON is valid", t_body)
-        else
-            ngx.log(ngx.ERR, "=========>>>>> INPUT JSON is NOT valid", t_body)
-        end				
     end
---    if validator.validate(t_body) then
---            ngx.log(ngx.WARN, "VALIDATOR AGREE TO LET YOU PASS", self.mode)
---    end
+    if validator.validate(t_body) then
+      ngx.log(ngx.WARN, "=========>>>>> INPUT BODY is valid", t_body)
+    else
+      ngx.log(ngx.ERR, "=========>>>>> INPUT BODY is NOT valid", t_body)
+    end	        
+  end
 end
 
 function _M:access()
