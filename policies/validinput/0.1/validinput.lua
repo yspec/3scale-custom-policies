@@ -27,12 +27,12 @@ end
 function _M:rewrite()
   -- change the request before it reaches upstream
   ngx.log(ngx.WARN, "function _M:rewrite=========>>>>> INPUT VALIDATOR config = ", self.mode)
-
+ngx.req.read_body()
 
 local t_json = [[
  {"menu": {   "id": "file",   "value": "File",   "popup": {    "menuitem": [      {"value": "New", "onclick": "CreateNewDoc()"},      {"value": "Open", "onclick": "OpenDoc()"},      {"value": "Close", "onclick": "CloseDoc()"}    ]  }}}
     ]]
-local t_body = ngx.req.read_body()
+local t_body = ngx.req.get_body_data()
 ngx.log(ngx.WARN, "=========>>>>> INPUT BODY:", t_body)    
 local validator
   if self.mode == 'xml' then
