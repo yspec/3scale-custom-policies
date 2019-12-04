@@ -2,8 +2,8 @@
 -- Validates a JSON against a schema.
 
 -- local jsonschema = require('jsonschema')
-local jsonvalidator = require('validators.validJson')
-local jsonvalidator1 = require('validators.json')
+--local jsonvalidator = require('validators.validJson')
+local jsonvalidator = require('validators.json')
 local setmetatable = setmetatable
 local _M = { }
 local mt = { __index = _M }
@@ -30,7 +30,7 @@ function _M.validate(json_content)
 end
 
 function _M.validateschema(json_content, config_schema)
-      ngx.log(ngx.WARN, "=========>>>>> WELCOME INTO JSON VALIDATOR")
+      ngx.log(ngx.WARN, "=========>>>>> WELCOME INTO JSON SCHEMA VALIDATOR")
 
   -- local validator = jsonschema.generate_validator(config_schema or {})
   -- return validator(json_content or {})
