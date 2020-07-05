@@ -25,7 +25,7 @@ end
 
 function _M:access()
   -- ability to deny the request before it is sent upstream
-  if config.enabled != "true" then
+  if config.enabled ~= "true" then
     return
   end
   
@@ -48,8 +48,8 @@ function _M:access()
   --local query = kong.request.get_raw_query()
   --local headers = kong.request.get_headers()
   --local request_body = kong.request.get_raw_body()
-..
-..local method = ngx.var.request_method
+  
+  local method = ngx.var.request_method
   local scheme = ngx.var.scheme
   local host = ngx.var.server_name
   local port = ngx.var.server_port
@@ -64,6 +64,7 @@ function _M:access()
   for key, val in pairs(args) do
     if len(query)>0 then
       query = query .. "&"
+    end
     if type(val) == "table" then
       query = query .. key .. "=" .. table.concat(val, "&" .. key .. "=")
     else
@@ -114,7 +115,7 @@ function _M:body_filter()
   -- can read and change response body
   -- https://github.com/openresty/lua-nginx-module/blob/master/README.markdown#body_filter_by_lua
   
-  if config.enabled != "true" then
+  if config.enabled ~= "true" then
     return
   end
   
@@ -126,7 +127,7 @@ end
 function _M:log()
   -- can do extra logging
   
-  if config.enabled != "true" then
+  if config.enabled ~= "true" then
     return
   end
   
