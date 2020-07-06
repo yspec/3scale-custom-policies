@@ -2,7 +2,7 @@ local setmetatable = setmetatable
 
 local _M = require('apicast.policy').new('MonitorViaImVision', '0.1')
 local mt = { __index = _M }
-http = require("socket.http")
+--http = require("socket.http")
 socket = require("socket")
 
 function _M.new()
@@ -172,34 +172,34 @@ function _M:balancer()
   -- use for example require('resty.balancer.round_robin').call to do load balancing
 end
 
-function send_to_http_imv_server(conf, payload, opcode, message_id)
+---function send_to_http_imv_server(conf, payload, opcode, message_id)
 
-    local imv_http_server_url = "http://".. conf.host .. ":" .. conf.port .."/"
-    local ts = math.floor(socket.gettime() * 1000)
+--    local imv_http_server_url = "http://".. conf.host .. ":" .. conf.port .."/"
+--    local ts = math.floor(socket.gettime() * 1000)
 
-    local data = {}
-    data["version"] = 1
-    data["opcode"] = opcode
-    data["flags"] = 0
-    data["message_id"] = message_id
-    data["timestamp"] = ts
-    data["message"] = payload
+--    local data = {}
+--    data["version"] = 1
+--    data["opcode"] = opcode
+--    data["flags"] = 0
+--    data["message_id"] = message_id
+--    data["timestamp"] = ts
+--    data["message"] = payload
 
-    local data_json = cjson.encode(data)
+--    local data_json = cjson.encode(data)
 
-    local imv_response_body = { }
-    local res, code, response_headers, status = http.request {
-      url = imv_http_server_url,
-      method = "POST",
-      headers = {
-          ["Content-Type"] = "application/json",
-          ["Content-Length"] = data_json:len()
-      },
-      source = ltn12.source.string(data_json),
-      sink = ltn12.sink.table(imv_response_body)
-    }
-    --ngx.log(ngx.NOTICE, "version: "..tostring(version)..", ts: "..tostring(ts)..", opcode: "..tostring(opcode)..", len: "..tostring(payload:len())..", message_id: "..tostring(message_id))
-end
+--    local imv_response_body = { }
+--    local res, code, response_headers, status = http.request {
+--      url = imv_http_server_url,
+--      method = "POST",
+--      headers = {
+--          ["Content-Type"] = "application/json",
+--          ["Content-Length"] = data_json:len()
+--      },
+--      source = ltn12.source.string(data_json),
+--      sink = ltn12.sink.table(imv_response_body)
+--    }
+--    --ngx.log(ngx.NOTICE, "version: "..tostring(version)..", ts: "..tostring(ts)..", opcode: "..tostring(opcode)..", len: "..tostring(payload:len())..", message_id: "..tostring(message_id))
+--end
 
 function send_to_tcp_imv_server(conf, payload, opcode, message_id)
     local client = get_tcp_connection(conf.host, conf.port)
