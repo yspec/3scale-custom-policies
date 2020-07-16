@@ -2,8 +2,6 @@ local setmetatable = setmetatable
 
 local _M = require('apicast.policy').new('MonitorViaImVision', '0.1')
 local mt = { __index = _M }
---http = require("socket.http")
---socket = require("socket")
 require("http")
 
 function _M.new()
@@ -13,8 +11,6 @@ end
 
 function _M:init()
   -- do work when nginx master process starts
-  --socket.TIMEOUT = config.timeout
-  --socket.TIMEOUT = 60
 end
 
 function _M:init_worker()
@@ -281,9 +277,10 @@ function _M.seed()
     math.randomseed(seed)
     return math.randomseed(seed)
   end
-  if package.loaded['socket'] and package.loaded['socket'].gettime then
-    seed = math.floor(package.loaded['socket'].gettime() * 100000)
-  elseif ngx then
+--  if package.loaded['socket'] and package.loaded['socket'].gettime then
+--    seed = math.floor(package.loaded['socket'].gettime() * 100000)
+--  else
+  if ngx then
     seed = ngx.time() + ngx.worker.pid()
 
   else
@@ -297,9 +294,10 @@ end
 
 function get_time()
   
-  if package.loaded['socket'] and package.loaded['socket'].gettime then
-    return = math.floor(package.loaded['socket'].gettime() * 1000)
-  elseif ngx then
+--  if package.loaded['socket'] and package.loaded['socket'].gettime then
+--    return = math.floor(package.loaded['socket'].gettime() * 1000)
+--  else
+  if ngx then
     return = ngx.time()*1000*1000
 
   else
