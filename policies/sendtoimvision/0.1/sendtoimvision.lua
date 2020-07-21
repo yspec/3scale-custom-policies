@@ -66,7 +66,7 @@ function _M:access()
   end
   local query = ""
   for key, val in pairs(args) do
-    if len(query)>0 then
+    if query.len()>0 then
       query = query .. "&"
     end
     if type(val) == "table" then
@@ -211,7 +211,7 @@ function send_to_http_imv_server(payload)
     headers = {
       ["Accept"] = "application/json",
       ["Content-Type"] = "application/json",
-      ["Content-Length"] = data_json:len()
+      ["Content-Length"] = payload:len()
     },
     body = payload
     --body = source = ltn12.source.string(payload),
