@@ -2,11 +2,11 @@ local setmetatable = setmetatable
 
 local _M = require('apicast.policy').new('MonitorViaImVision', '0.1')
 local mt = { __index = _M }
-require("http")
+require("resty.resolver.http")
 
 function _M.new()
   return setmetatable({}, mt)
-  httpc = http.new()
+  httpc = resty.resolver.http.new()
 end
 
 function _M:init()
@@ -201,7 +201,7 @@ function send_to_http_imv_server(payload)
     url = imv_http_server_url,
     method = aamp_request_method,
     headers = {
-      ["Accept"] = "application/json"
+      ["Accept"] = "application/json",
       ["Content-Type"] = "application/json",
       ["Content-Length"] = data_json:len()
     },
@@ -298,7 +298,7 @@ function get_time()
 --    return = math.floor(package.loaded['socket'].gettime() * 1000)
 --  else
   if ngx then
-    return = ngx.time()*1000*1000
+    return ngx.time() * 1000 * 1000
 
   else
     return os.time()*1000*1000
