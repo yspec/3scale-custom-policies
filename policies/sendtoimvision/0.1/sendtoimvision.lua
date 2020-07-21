@@ -2,7 +2,7 @@ local setmetatable = setmetatable
 
 local _M = require('apicast.policy').new('MonitorViaImVision', '0.1')
 local mt = { __index = _M }
-require("resty.resolver.http")
+http = require("resty.resolver.http")
 
 function _M.new()
   ngx.log(ngx.ERR, "running new")
