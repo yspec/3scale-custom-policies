@@ -5,8 +5,8 @@ local mt = { __index = _M }
 require("resty.resolver.http")
 
 function _M.new()
-  return setmetatable({}, mt)
   httpc = resty.resolver.http.new()
+  return setmetatable({}, mt)
 end
 
 function _M:init()
@@ -301,7 +301,7 @@ function get_time()
     return ngx.time() * 1000 * 1000
 
   else
-    return os.time()*1000*1000
+    return os.time() * 1000 * 1000
   end
 end
 
