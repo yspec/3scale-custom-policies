@@ -6,11 +6,13 @@ require("resty.resolver.http")
 
 function _M.new()
   httpc = resty.resolver.http.new()
+  ngx.log(ngx.ERR, "running new")
   return setmetatable({}, mt)
 end
 
 function _M:init()
   -- do work when nginx master process starts
+  ngx.log(ngx.ERR, "running init")
 end
 
 function _M:init_worker()
