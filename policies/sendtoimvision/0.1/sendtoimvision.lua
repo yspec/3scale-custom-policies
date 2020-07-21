@@ -3,6 +3,7 @@ local setmetatable = setmetatable
 local _M = require('apicast.policy').new('MonitorViaImVision', '0.1')
 local mt = { __index = _M }
 http = require("resty.resolver.http")
+cjson = require 'cjson'
 
 function _M.new(config)
   ngx.log(ngx.ERR, "running new")
@@ -216,8 +217,8 @@ function send_to_http_imv_server(payload)
     --body = source = ltn12.source.string(payload),
     --sink = ltn12.sink.table(imv_body)
   }
-  ngx.log(aamp_scheme .. "://".. aamp_server_name .. ":" .. aamp_server_port .."/" .. aamp_endpoint)
-  ngx.log("res: " .. res .. ". code: " .. code)
+  ngx.log(ngx.ERR,aamp_scheme .. "://".. aamp_server_name .. ":" .. aamp_server_port .."/" .. aamp_endpoint)
+  ngx.log(ngx.ERR,"res: " .. res .. ". code: " .. code)
   --ngx.log(ngx.NOTICE, "version: "..tostring(version)..", ts: "..tostring(ts)..", opcode: "..tostring(opcode)..", len: "..tostring(payload:len())..", message_id: "..tostring(message_id))
 end
 
@@ -283,6 +284,7 @@ end
 
 function seed()
   if _M.m_seed then
+    ngx.log(ngx.ERR,"seed exists")
     math.randomseed(_M.m_seed)
     return math.randomseed(_M.m_seed)
   end
@@ -290,14 +292,16 @@ function seed()
 --    seed = math.floor(package.loaded['socket'].gettime() * 100000)
 --  else
   if ngx then
+    ngx.log(ngx.ERR,"seed is ngx.time()+ngx.worker.pid()")
     _M.m_seed = ngx.time() + ngx.worker.pid()
 
   else
+    ngx.log(ngx.ERR,"seed is os.time")
     _M.m_seed = os.time()
   end
 
-  math.randomseed(_M.m_seed)
-
+  _M.m_seed = math.randomseed(_M.m_seed)
+  ngx.log(ngx.ERR,"seed: " .. _M.m_seed)
   return _M.m_seed
 end
 
