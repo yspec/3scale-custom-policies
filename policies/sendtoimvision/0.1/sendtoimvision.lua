@@ -26,10 +26,10 @@ end
 function _M:access()
   -- ability to deny the request before it is sent upstream
   ngx.log(ngx.ERR, "running access")
-  if config.enabled ~= "true" then
-    ngx.log(ngx.ERR, "config.enables != true!")
-    return
-  end
+  --if config.enabled ~= "true" then
+  --  ngx.log(ngx.ERR, "config.enables != true!")
+  --  return
+  --end
   
   ngx.ctx.client = nil
   ngx.ctx.message_id = 0
@@ -116,9 +116,9 @@ function _M:body_filter()
   -- can read and change response body
   -- https://github.com/openresty/lua-nginx-module/blob/master/README.markdown#body_filter_by_lua
   
-  if config.enabled ~= "true" then
-    return
-  end
+  --if config.enabled ~= "true" then
+  --  return
+  --end
   
   -- getting pieces of the response_body from 'body_filter' function, concatenating them together
   local chunk = ngx.arg[1]
@@ -128,9 +128,9 @@ end
 function _M:log()
   -- can do extra logging
   ngx.log(ngx.ERR, "running log")
-  if config.enabled ~= "true" then
-    return
-  end
+  --if config.enabled ~= "true" then
+  --  return
+  --end
   
   -- getting the response data from 'log', saving everything and sending to imv server
   local status = ngx.status
