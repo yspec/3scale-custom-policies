@@ -66,7 +66,7 @@ function _M:access()
   end
   local query = ""
   for key, val in pairs(args) do
-    if query.len()>0 then
+    if query:len()>0 then
       query = query .. "&"
     end
     if type(val) == "table" then
