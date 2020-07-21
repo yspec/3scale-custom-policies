@@ -23,7 +23,9 @@ end
 
 function _M:access()
   -- ability to deny the request before it is sent upstream
+  ngx.log(ngx.ERR, "running access")
   if config.enabled ~= "true" then
+    ngx.log(ngx.ERR, "config.enables != true!")
     return
   end
   
@@ -123,7 +125,7 @@ end
 
 function _M:log()
   -- can do extra logging
-  
+  ngx.log(ngx.ERR, "running log")
   if config.enabled ~= "true" then
     return
   end
@@ -166,6 +168,7 @@ function _M:balancer()
 end
 
 function send_request_info_to_imv_server(method, url, req_headers, req_body, message_id)
+  ngx.log(ngx.ERR, "send_request")
   local body_dict = {}
   body_dict["requestTimestamp"] = get_time()
   body_dict["transactionId"] = message_id
@@ -180,6 +183,7 @@ function send_request_info_to_imv_server(method, url, req_headers, req_body, mes
 end
 
 function send_response_info_to_imv_server(status_code, res_headers, res_body, message_id)
+  ngx.log(ngx.ERR, "send_respones")
   local body_dict = {}
   body_dict["responseTimestamp"] = get_time()
   body_dict["transactionId"] = message_id
@@ -193,7 +197,7 @@ function send_response_info_to_imv_server(status_code, res_headers, res_body, me
 end
 
 function send_to_http_imv_server(payload)
-
+  ngx.log(ngx.ERR, "sending...")
   local imv_http_server_url = aamp_scheme .. "://".. aamp_server_name .. ":" .. aamp_server_port .."/" .. aamp_endpoint
 
   local imv_body = { }
@@ -209,6 +213,8 @@ function send_to_http_imv_server(payload)
     --body = source = ltn12.source.string(payload),
     --sink = ltn12.sink.table(imv_body)
   }
+  ngx.log(aamp_scheme .. "://".. aamp_server_name .. ":" .. aamp_server_port .."/" .. aamp_endpoint)
+  ngx.log("res: " .. res .. ". code: " .. code)
   --ngx.log(ngx.NOTICE, "version: "..tostring(version)..", ts: "..tostring(ts)..", opcode: "..tostring(opcode)..", len: "..tostring(payload:len())..", message_id: "..tostring(message_id))
 end
 
