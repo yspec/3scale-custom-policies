@@ -6,6 +6,7 @@ http = require("resty.resolver.http")
 
 function _M.new(config)
   ngx.log(ngx.ERR, "running new")
+  self.enabled = config.enabled
   httpc = http.new()
   return setmetatable({}, mt)
 end
@@ -13,7 +14,6 @@ end
 function _M:init()
   -- do work when nginx master process starts
   ngx.log(ngx.ERR, "running init")
-  self.enabled = config.enabled
 end
 
 function _M:init_worker()
