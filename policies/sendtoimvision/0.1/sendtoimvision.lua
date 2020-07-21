@@ -4,7 +4,7 @@ local _M = require('apicast.policy').new('MonitorViaImVision', '0.1')
 local mt = { __index = _M }
 http = require("resty.resolver.http")
 
-function _M.new()
+function _M.new(config)
   ngx.log(ngx.ERR, "running new")
   httpc = http.new()
   return setmetatable({}, mt)
@@ -13,6 +13,7 @@ end
 function _M:init()
   -- do work when nginx master process starts
   ngx.log(ngx.ERR, "running init")
+  self.enabled = config.enabled
 end
 
 function _M:init_worker()
@@ -280,24 +281,24 @@ end
 --    return res
 --end
 
-function _M.seed()
-  if seed then
-    math.randomseed(seed)
-    return math.randomseed(seed)
+function seed()
+  if _M.m_seed then
+    math.randomseed(_M.m_seed)
+    return math.randomseed(_M.m_seed)
   end
 --  if package.loaded['socket'] and package.loaded['socket'].gettime then
 --    seed = math.floor(package.loaded['socket'].gettime() * 100000)
 --  else
   if ngx then
-    seed = ngx.time() + ngx.worker.pid()
+    _M.m_seed = ngx.time() + ngx.worker.pid()
 
   else
-    seed = os.time()
+    _M.m_seed = os.time()
   end
 
-  math.randomseed(seed)
+  math.randomseed(_M.m_seed)
 
-  return math.randomseed(seed)
+  return math.randomseed(_M.m_seed)
 end
 
 function get_time()
