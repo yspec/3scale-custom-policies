@@ -5,8 +5,8 @@ local mt = { __index = _M }
 require("resty.resolver.http")
 
 function _M.new()
-  httpc = resty.resolver.http.new()
   ngx.log(ngx.ERR, "running new")
+  httpc = http.new()
   return setmetatable({}, mt)
 end
 
