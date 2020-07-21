@@ -298,7 +298,7 @@ function seed()
 
   math.randomseed(_M.m_seed)
 
-  return math.randomseed(_M.m_seed)
+  return _M.m_seed
 end
 
 function get_time()
