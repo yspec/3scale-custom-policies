@@ -29,7 +29,7 @@ function _M:access()
   -- ability to deny the request before it is sent upstream
   ngx.log(ngx.ERR, "running access")
   if _M.enabled ~= "true" then
-    ngx.log(ngx.ERR, "config.enabled != true!")
+    ngx.log(ngx.ERR, "config.enabled (" .. _M.enabled .. ") != true!")
     return
   end
   
