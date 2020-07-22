@@ -8,13 +8,15 @@ resty_env = require 'resty.env'
 
 function _M.new(config)
   ngx.log(ngx.ERR, "running new")
-  ngx.ctx.config = config
-  for k, v in pairs(config) do
+  local self = setmetatable({}, mt)
+  self.enabled = config.enabled
+  self.timeout = config.timeout
+  for k, v in pairs(self) do
     ngx.log(ngx.ERR, k .. ": " .. v)
   end
   --ngx.log(ngx.ERR, config.timeout)
   httpc = http.new()
-  return setmetatable({}, mt)
+  return self
 end
 
 function _M:init()
@@ -33,6 +35,9 @@ end
 function _M:access()
   -- ability to deny the request before it is sent upstream
   ngx.log(ngx.ERR, "running access")
+  for k, v in pairs(env.list()) do
+    ngx.log(ngx.ERR, k .. ": " .. v)
+  end
   --if ngx.ctx.enabled ~= "true" then
   --  ngx.log(ngx.ERR, "config.enabled (" .. ngx.ctx.enabled .. ") != true!")
   --  return
