@@ -222,9 +222,9 @@ function send_to_http_imv_server(payload)
   --local imv_http_server_url = resty_env.get("aamp_scheme") .. "://".. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint")
   local imv_http_server_url = "http://54.237.99.160:5601/data"--.. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint")
   local timeout = 60000
-  if self.timeout then
-    timeout = self.timeout
-  end
+  --if self.timeout then
+  --  timeout = self.timeout
+  --end
   ngx.ctx.httpc:set_timeout(timeout)
   local imv_body = { }
   local res, code, response_headers, status = ngx.ctx.httpc:request_uri(imv_http_server_url,{
