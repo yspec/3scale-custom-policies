@@ -4,6 +4,7 @@ local _M = require('apicast.policy').new('MonitorViaImVision', '0.1')
 local mt = { __index = _M }
 http = require("resty.resolver.http")
 cjson = require 'cjson'
+resty_env = require 'resty.env'
 
 function _M.new(config)
   ngx.log(ngx.ERR, "running new")
@@ -202,7 +203,7 @@ end
 
 function send_to_http_imv_server(payload)
   ngx.log(ngx.ERR, "sending...")
-  local imv_http_server_url = os.getenv("aamp_scheme") .. "://".. os.getenv("aamp_server_name") .. ":" .. os.getenv("aamp_server_port") .."/" .. os.getenv("aamp_endpoint")
+  local imv_http_server_url = resty_env.value("aamp_scheme") .. "://".. resty_env.value("aamp_server_name") .. ":" .. resty_env.value("aamp_server_port") .."/" .. resty_env.value("aamp_endpoint")
 
   local imv_body = { }
   local res, code, response_headers, status = httpc.request {
