@@ -72,9 +72,10 @@ function _M:access()
   
   local method = ngx.var.request_method
   local scheme = ngx.var.scheme
-  local host = ngx.var.server_name
+  local host = ngx.var.host
   local port = ngx.var.server_port
   local path = ngx.var.request_uri
+  ngx.log(ngx.ERR,"URI: " .. path)
   
   local args, err = ngx.req.get_uri_args()
   if err == "truncated" then
@@ -94,6 +95,7 @@ function _M:access()
       query = query .. key .. "=" .. val
     end
   end
+  ngx.log(ngx.ERR,"query: " .. query)
   --query = cjson.table2json(query)   path.. "?" .. query
   --ngx.log(ngx.ERR, "Can  query ".. tostring(query))
   local headers = ngx.req.get_headers()
@@ -117,7 +119,7 @@ function _M:access()
     full_body = request_body
   end
   
-  send_request_info_to_imv_server(method, url, headers_json, full_body, ngx.ctx.message_id)
+  send_request_info_to_imv_server(method, url, headers_dict, full_body, ngx.ctx.message_id)
   --send_to_tcp_imv_server(conf, full_request, 0, ngx.ctx.message_id)
 end
 
@@ -162,7 +164,7 @@ function _M:log()
   local is_chunked = false
   
   local headers_dict = {}
-  local i = 0
+  local i = 1
   for k,v in pairs(headers) do
     headers_dict[i] = {
       name = k,
@@ -192,7 +194,7 @@ function _M:log()
     ngx.log(ngx.ERR, "Got response without request, sending with message id 0")
   end
 
-  send_response_info_to_imv_server(status, headers_json, full_body, ngx.ctx.message_id)
+  send_response_info_to_imv_server(status, headers_dict, full_body, ngx.ctx.message_id)
   --send_to_tcp_imv_server(conf, full_response, 1, ngx.ctx.message_id)
   --close_tcp_connection()
 end
