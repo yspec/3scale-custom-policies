@@ -81,9 +81,9 @@ function _M:access()
     -- one can choose to ignore or reject the current request here
     return
   end
-  local query = ""
+  local query = "?"
   for key, val in pairs(args) do
-    if query:len()>0 then
+    if query:len()>1 then
       query = query .. "&"
     end
     if type(val) == "table" then
@@ -98,17 +98,17 @@ function _M:access()
   ngx.req.read_body()
   local request_body = ngx.req.get_body_data()
 
-  local url = scheme .. "://" .. host .. ":" .. port .. "/" .. path .. "?" .. query
-  local headers_json = "["
+  local url = scheme .. "://" .. host .. ":" .. port .. path .. query
+  local headers_dict = {}
+  local i = 0
   for k,v in pairs(headers) do
-    if first == true then
-      first = false
-    else
-      headers_json = headers_json .. ","
-    end
-    headers_json = headers_json .. "{\"name\": " .. k .. ", \"value\": " .. v .. "}"
+    headers_dict[i] = {
+      name = k,
+      value = v
+    }
+    i = i+1
   end
-  headers_json = headers_json .. "]"
+  local headers_json = cjson.encode(headers_dict)
 
   local full_body = ""
   if (request_body ~= nil and request_body ~= '') then
@@ -158,17 +158,28 @@ function _M:log()
   --ngx.log(ngx.ERR, "status::: " .. status)
   
   local is_chunked = false
-  local first = true
-  local headers_json = "["
+  
+  local headers_dict = {}
+  local i = 0
   for k,v in pairs(headers) do
-    if first == true then
-      first = false
-    else
-      headers_json = headers_json .. ","
-    end
-    headers_json = headers_json .. "{\"name\": " .. k .. ", \"value\": " .. v .. "}"
+    headers_dict[i] = {
+      name = k,
+      value = v
+    }
+    i = i+1
   end
-  headers_json = headers_json .. "]"
+  local headers_json = cjson.encode(headers_dict)
+  
+  --local headers_json = "["
+  --for k,v in pairs(headers) do
+--    if first == true then
+      --first = false
+    --else
+--      headers_json = headers_json .. ","
+    --end
+    --headers_json = headers_json .. "{\"name\": " .. k .. ", \"value\": " .. v .. "}"
+  --end
+  --headers_json = headers_json .. "]"
 
   local full_body = ""
   if (ngx.ctx.response_body ~= nil and ngx.ctx.response_body ~= '') then
