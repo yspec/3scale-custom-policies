@@ -240,7 +240,7 @@ function send_to_http_imv_server(premature, payload)
   --if self.timeout then
   --  timeout = self.timeout
   --end
-  ngx.ctx.httpc:set_timeout(timeout)
+  --ngx.ctx.httpc:set_timeout(timeout)
   local imv_body = { }
   local res, code, response_headers, status = ngx.ctx.httpc:request_uri(imv_http_server_url,{
     url = imv_http_server_url,
