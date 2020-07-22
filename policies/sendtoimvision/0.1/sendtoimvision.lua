@@ -75,7 +75,7 @@ function _M:access()
   local host = ngx.var.host
   local port = ngx.var.server_port
   local path = ngx.var.request_uri
-  ngx.log(ngx.ERR,"URI: " .. path)
+  --ngx.log(ngx.ERR,"URI: " .. path)
   
   --local args, err = ngx.req.get_uri_args()
   --if err == "truncated" then
@@ -251,7 +251,7 @@ function send_to_http_imv_server(premature, payload)
   if httpc then
     ngx.log(ngx.ERR, "httpc exists in send_to_http_imv_server")
   end
-  local res, code, response_headers, status = ngx.ctx.httpc:request_uri(imv_http_server_url,{
+  local res, code, response_headers, status = httpc:request_uri(imv_http_server_url,{
     url = imv_http_server_url,
     method = "POST", --aamp_request_method,
     headers = {
