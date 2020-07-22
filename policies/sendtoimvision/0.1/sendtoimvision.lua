@@ -9,6 +9,7 @@ resty_env = require 'resty.env'
 function _M.new(config)
   ngx.log(ngx.ERR, "running new")
   ngx.ctx.enabled = config.enabled
+  ngx.log(ngx.ERR, config.timeout)
   httpc = http.new()
   return setmetatable({}, mt)
 end
