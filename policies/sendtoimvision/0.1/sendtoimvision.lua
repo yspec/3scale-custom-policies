@@ -9,6 +9,9 @@ resty_env = require 'resty.env'
 function _M.new(config)
   ngx.log(ngx.ERR, "running new")
   ngx.ctx.config = config
+  for k, v in pairs(config) do
+    ngx.log(ngx.ERR, k .. ": " .. v)
+  end
   --ngx.log(ngx.ERR, config.timeout)
   httpc = http.new()
   return setmetatable({}, mt)
@@ -17,9 +20,6 @@ end
 function _M:init()
   -- do work when nginx master process starts
   ngx.log(ngx.ERR, "running init")
-  for k, v in pairs(ngx.ctx.config) do
-    ngx.log(ngx.ERR, k .. ": " .. v)
-  end
 end
 
 function _M:init_worker()
@@ -207,7 +207,7 @@ end
 
 function send_to_http_imv_server(payload)
   ngx.log(ngx.ERR, "sending...")
-  local imv_http_server_url = resty_env.value("aamp_scheme") .. "://".. resty_env.value("aamp_server_name") .. ":" .. resty_env.value("aamp_server_port") .."/" .. resty_env.value("aamp_endpoint")
+  local imv_http_server_url = resty_env.get("aamp_scheme") .. "://".. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint")
 
   local imv_body = { }
   local res, code, response_headers, status = httpc.request {
