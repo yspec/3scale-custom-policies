@@ -33,6 +33,11 @@ function _M:rewrite()
 end
 
 function _M:access()
+  if httpc then
+    ngx.log(ngx.ERR, "httpc exists in access")
+  else
+    httpc = http.new()
+  
   -- ability to deny the request before it is sent upstream
   ngx.log(ngx.ERR, "running access")
   for k, v in pairs(resty_env.list()) do
@@ -216,7 +221,6 @@ function send_to_http_imv_server(payload)
   local imv_http_server_url = "http://54.237.99.160:5601/data"--.. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint")
 
   local imv_body = { }
-  httpc = http.new()
   local res, code, response_headers, status = httpc.request ({
     url = imv_http_server_url,
     method = aamp_request_method,
