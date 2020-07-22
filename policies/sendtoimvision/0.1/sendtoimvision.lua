@@ -7,9 +7,9 @@ cjson = require 'cjson'
 resty_env = require 'resty.env'
 
 function _M.new(config)
-  ngx.log(ngx.ERR, "running new, config:" .. config)
-  ngx.ctx.enabled = config.enabled
-  ngx.log(ngx.ERR, config.timeout)
+  ngx.log(ngx.ERR, "running new")
+  ngx.ctx.config = config
+  --ngx.log(ngx.ERR, config.timeout)
   httpc = http.new()
   return setmetatable({}, mt)
 end
@@ -17,6 +17,9 @@ end
 function _M:init()
   -- do work when nginx master process starts
   ngx.log(ngx.ERR, "running init")
+  for k, v in pairs(ngx.ctx.config) do
+    ngx.log(ngx.ERR, k .. ": " .. v)
+  end
 end
 
 function _M:init_worker()
