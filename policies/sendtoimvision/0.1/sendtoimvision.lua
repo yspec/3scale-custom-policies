@@ -216,7 +216,8 @@ function send_to_http_imv_server(payload)
   local imv_http_server_url = "http://54.237.99.160:5601/data"--.. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint")
 
   local imv_body = { }
-  local res, code, response_headers, status = httpc.request {
+  httpc = http.new()
+  local res, code, response_headers, status = httpc.request ({
     url = imv_http_server_url,
     method = aamp_request_method,
     headers = {
@@ -227,7 +228,7 @@ function send_to_http_imv_server(payload)
     body = payload
     --body = source = ltn12.source.string(payload),
     --sink = ltn12.sink.table(imv_body)
-  }
+  })
   ngx.log(ngx.ERR,"os.getenv: " .. os.getenv(aamp_scheme) .. "://".. os.getenv(aamp_server_name) .. ":" .. os.getenv(aamp_server_port) .."/" .. os.getenv(aamp_endpoint))
   ngx.log(ngx.ERR,"resty_env.get: " .. resty_env.get(aamp_scheme) .. "://".. resty_env.get(aamp_server_name) .. ":" .. resty_env.get(aamp_server_port) .."/" .. resty_env.get(aamp_endpoint))
   ngx.log(ngx.ERR,"resty_env.value: " .. resty_env.value(aamp_scheme) .. "://".. resty_env.value(aamp_server_name) .. ":" .. resty_env.value(aamp_server_port) .."/" .. resty_env.value(aamp_endpoint))
