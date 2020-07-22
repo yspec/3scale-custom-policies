@@ -284,11 +284,6 @@ end
 --end
 
 function seed()
-  if _M.m_seed then
-    ngx.log(ngx.ERR,"seed exists")
-    math.randomseed(_M.m_seed)
-    return _M.m_seed
-  end
 --  if package.loaded['socket'] and package.loaded['socket'].gettime then
 --    seed = math.floor(package.loaded['socket'].gettime() * 100000)
 --  else
