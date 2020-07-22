@@ -8,7 +8,7 @@ resty_env = require 'resty.env'
 
 function _M.new(config)
   ngx.log(ngx.ERR, "running new")
-  local self = setmetatable({}, mt)
+  self = setmetatable({}, mt)
   self.enabled = config.enabled
   self.timeout = config.timeout
   for k, v in pairs(self) do
@@ -145,7 +145,12 @@ function _M:body_filter()
   
   -- getting pieces of the response_body from 'body_filter' function, concatenating them together
   local chunk = ngx.arg[1]
-  ngx.ctx.response_body = ngx.ctx.response_body .. (chunk or "")
+  if (ngx.ctx.response_body ~= nil and ngx.ctx.response_body ~= '') then
+    ngx.ctx.response_body = ngx.ctx.response_body .. (chunk or "")
+  else
+    ngx.ctx.response_body = (chunk or "")
+    ngx.log(ngx.ERR,"no ctx.response_body in body_filter, only writing chunk:" .. ngx.ctx.response_body)
+  end
 end
 
 function _M:log()
@@ -191,10 +196,13 @@ function _M:log()
   local full_body = ""
   if (ngx.ctx.response_body ~= nil and ngx.ctx.response_body ~= '') then
     full_body = ngx.ctx.response_body
+  else
+    ngx.log(ngx.ERR,"no ctx.response_body in log!")
   end
 
-  if ngx.ctx.message_id == 0 then
-    ngx.log(ngx.ERR, "Got response without request, sending with message id 0")
+  if (ngx.ctx.message_id == 0 or ngx.ctx.message_id == nil) then
+    ngx.log(ngx.ERR, "Got response without request, sending with message id 0!!!")
+    ngx.ctx.message_id = 0
   end
 
   send_response_info_to_imv_server(status, headers_dict, full_body, ngx.ctx.message_id)
