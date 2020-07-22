@@ -228,8 +228,8 @@ function send_to_http_imv_server(payload)
     --body = source = ltn12.source.string(payload),
     --sink = ltn12.sink.table(imv_body)
   }
-  ngx.log(ngx.ERR,"os.getenv: " .. os.getenv(aamp_scheme) .. "://".. os.getenv(aamp_server_name) .. ":" .. os.getenv(aamp_server_port) .."/" .. os.getenv(aamp_endpoint)
-  ngx.log(ngx.ERR,"resty_env.get: " .. resty_env.get(aamp_scheme) .. "://".. resty_env.get(aamp_server_name) .. ":" .. resty_env.get(aamp_server_port) .."/" .. resty_env.get(aamp_endpoint)
+  ngx.log(ngx.ERR,"os.getenv: " .. os.getenv(aamp_scheme) .. "://".. os.getenv(aamp_server_name) .. ":" .. os.getenv(aamp_server_port) .."/" .. os.getenv(aamp_endpoint))
+  ngx.log(ngx.ERR,"resty_env.get: " .. resty_env.get(aamp_scheme) .. "://".. resty_env.get(aamp_server_name) .. ":" .. resty_env.get(aamp_server_port) .."/" .. resty_env.get(aamp_endpoint))
   ngx.log(ngx.ERR,"resty_env.value: " .. resty_env.value(aamp_scheme) .. "://".. resty_env.value(aamp_server_name) .. ":" .. resty_env.value(aamp_server_port) .."/" .. resty_env.value(aamp_endpoint))
   ngx.log(ngx.ERR,"res: " .. res .. ". code: " .. code)
   --ngx.log(ngx.NOTICE, "version: "..tostring(version)..", ts: "..tostring(ts)..", opcode: "..tostring(opcode)..", len: "..tostring(payload:len())..", message_id: "..tostring(message_id))
