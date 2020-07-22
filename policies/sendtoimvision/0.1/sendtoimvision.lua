@@ -7,7 +7,7 @@ cjson = require 'cjson'
 
 function _M.new(config)
   ngx.log(ngx.ERR, "running new")
-  _M.enabled = config.enabled
+  ngx.ctx.enabled = config.enabled
   httpc = http.new()
   return setmetatable({}, mt)
 end
@@ -28,8 +28,8 @@ end
 function _M:access()
   -- ability to deny the request before it is sent upstream
   ngx.log(ngx.ERR, "running access")
-  if _M.enabled ~= "true" then
-    ngx.log(ngx.ERR, "config.enabled (" .. _M.enabled .. ") != true!")
+  if ngx.ctx.enabled ~= "true" then
+    ngx.log(ngx.ERR, "config.enabled (" .. ngx.ctx.enabled .. ") != true!")
     return
   end
   
@@ -118,7 +118,7 @@ function _M:body_filter()
   -- can read and change response body
   -- https://github.com/openresty/lua-nginx-module/blob/master/README.markdown#body_filter_by_lua
   
-  if _M.enabled ~= "true" then
+  if ngx.ctx.enabled ~= "true" then
     return
   end
   
@@ -130,7 +130,7 @@ end
 function _M:log()
   -- can do extra logging
   ngx.log(ngx.ERR, "running log")
-  if _M.enabled ~= "true" then
+  if ngx.ctx.enabled ~= "true" then
     return
   end
   
