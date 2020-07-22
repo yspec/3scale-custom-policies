@@ -35,10 +35,10 @@ end
 function _M:access()
   if httpc then
     ngx.log(ngx.ERR, "httpc exists in access")
-    ngx.ctx.httpc = httpc
   else
     httpc = http.new()
-    ngx.ctx.httpc = httpc
+  end
+  ngx.ctx.httpc = httpc
   
   -- ability to deny the request before it is sent upstream
   ngx.log(ngx.ERR, "running access")
