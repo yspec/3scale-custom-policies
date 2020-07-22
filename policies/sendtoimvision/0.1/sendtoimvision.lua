@@ -81,7 +81,7 @@ function _M:access()
   --if err == "truncated" then
     -- one can choose to ignore or reject the current request here
     --return
-  end
+  --end
   --local query = ""
   --for key, val in pairs(args) do
   --  if query:len()>0 then
@@ -102,7 +102,7 @@ function _M:access()
   ngx.req.read_body()
   local request_body = ngx.req.get_body_data()
 
-  local url = scheme .. "://" .. host .. ":" .. port .. path-- .. query
+  local url = scheme .. "://" .. host .. ":" .. port .. path -- .. query
   local headers_dict = {}
   local i = 1
   for k,v in pairs(headers) do
