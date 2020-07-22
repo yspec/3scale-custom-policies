@@ -225,7 +225,7 @@ function send_to_http_imv_server(payload)
   local imv_body = { }
   local res, code, response_headers, status = ngx.ctx.httpc.request ({
     url = imv_http_server_url,
-    method = aamp_request_method,
+    method = "POST", --aamp_request_method,
     headers = {
       ["Accept"] = "application/json",
       ["Content-Type"] = "application/json",
