@@ -153,6 +153,7 @@ function _M:log()
   ngx.log(ngx.ERR, "running log")
   if httpc then
     ngx.log(ngx.ERR, "httpc exists in log")
+  end
   --if ngx.ctx.enabled ~= "true" then
   --  return
   --end
@@ -224,6 +225,7 @@ function send_response_info_to_imv_server(status_code, res_headers, res_body, me
   ngx.log(ngx.ERR, "send_respones")
   if httpc then
     ngx.log(ngx.ERR, "httpc exists in send_response_info_to_imv_server")
+  end
   local body_dict = {}
   body_dict["responseTimestamp"] = get_time()
   body_dict["transactionId"] = message_id
@@ -248,6 +250,7 @@ function send_to_http_imv_server(premature, payload)
   local imv_body = { }
   if httpc then
     ngx.log(ngx.ERR, "httpc exists in send_to_http_imv_server")
+  end
   local res, code, response_headers, status = ngx.ctx.httpc:request_uri(imv_http_server_url,{
     url = imv_http_server_url,
     method = "POST", --aamp_request_method,
