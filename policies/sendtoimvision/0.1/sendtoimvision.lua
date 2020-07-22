@@ -35,7 +35,7 @@ end
 function _M:access()
   -- ability to deny the request before it is sent upstream
   ngx.log(ngx.ERR, "running access")
-  for k, v in pairs(env.list()) do
+  for k, v in pairs(resty_env.list()) do
     ngx.log(ngx.ERR, k .. ": " .. v)
   end
   --if ngx.ctx.enabled ~= "true" then
