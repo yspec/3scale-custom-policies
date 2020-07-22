@@ -77,32 +77,32 @@ function _M:access()
   local path = ngx.var.request_uri
   ngx.log(ngx.ERR,"URI: " .. path)
   
-  local args, err = ngx.req.get_uri_args()
-  if err == "truncated" then
+  --local args, err = ngx.req.get_uri_args()
+  --if err == "truncated" then
     -- one can choose to ignore or reject the current request here
-    return
+    --return
   end
-  local query = ""
-  for key, val in pairs(args) do
-    if query:len()>0 then
-      query = query .. "&"
-    else
-      query = "?"
-    end
-    if type(val) == "table" then
-      query = query .. key .. "=" .. table.concat(val, "&" .. key .. "=")
-    else
-      query = query .. key .. "=" .. val
-    end
-  end
-  ngx.log(ngx.ERR,"query: " .. query)
+  --local query = ""
+  --for key, val in pairs(args) do
+  --  if query:len()>0 then
+  --    query = query .. "&"
+  --  else
+  --    query = "?"
+  --  end
+  --  if type(val) == "table" then
+  --    query = query .. key .. "=" .. table.concat(val, "&" .. key .. "=")
+  --  else
+  --    query = query .. key .. "=" .. val
+  --  end
+  --end
+  --ngx.log(ngx.ERR,"query: " .. query)
   --query = cjson.table2json(query)   path.. "?" .. query
   --ngx.log(ngx.ERR, "Can  query ".. tostring(query))
   local headers = ngx.req.get_headers()
   ngx.req.read_body()
   local request_body = ngx.req.get_body_data()
 
-  local url = scheme .. "://" .. host .. ":" .. port .. path .. query
+  local url = scheme .. "://" .. host .. ":" .. port .. path-- .. query
   local headers_dict = {}
   local i = 1
   for k,v in pairs(headers) do
@@ -151,6 +151,8 @@ end
 function _M:log()
   -- can do extra logging
   ngx.log(ngx.ERR, "running log")
+  if httpc then
+    ngx.log(ngx.ERR, "httpc exists in log")
   --if ngx.ctx.enabled ~= "true" then
   --  return
   --end
@@ -220,6 +222,8 @@ end
 
 function send_response_info_to_imv_server(status_code, res_headers, res_body, message_id)
   ngx.log(ngx.ERR, "send_respones")
+  if httpc then
+    ngx.log(ngx.ERR, "httpc exists in send_response_info_to_imv_server")
   local body_dict = {}
   body_dict["responseTimestamp"] = get_time()
   body_dict["transactionId"] = message_id
@@ -242,6 +246,8 @@ function send_to_http_imv_server(premature, payload)
   --end
   --ngx.ctx.httpc:set_timeout(timeout)
   local imv_body = { }
+  if httpc then
+    ngx.log(ngx.ERR, "httpc exists in send_to_http_imv_server")
   local res, code, response_headers, status = ngx.ctx.httpc:request_uri(imv_http_server_url,{
     url = imv_http_server_url,
     method = "POST", --aamp_request_method,
@@ -258,7 +264,7 @@ function send_to_http_imv_server(premature, payload)
   --ngx.log(ngx.ERR,"os.getenv: " .. os.getenv("aamp_scheme") .. "://".. os.getenv("aamp_server_name") .. ":" .. os.getenv("aamp_server_port") .."/" .. os.getenv("aamp_endpoint"))
   --ngx.log(ngx.ERR,"resty_env.get: " .. resty_env.get("aamp_scheme") .. "://".. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint"))
   --ngx.log(ngx.ERR,"resty_env.value: " .. resty_env.value("aamp_scheme") .. "://".. resty_env.value("aamp_server_name") .. ":" .. resty_env.value("aamp_server_port") .."/" .. resty_env.value("aamp_endpoint"))
-  ngx.log(ngx.ERR,"res: " .. res)-- .. ". code: " .. code)
+  --ngx.log(ngx.ERR,"res: " .. res)-- .. ". code: " .. code)
   --ngx.log(ngx.NOTICE, "version: "..tostring(version)..", ts: "..tostring(ts)..", opcode: "..tostring(opcode)..", len: "..tostring(payload:len())..", message_id: "..tostring(message_id))
 end
 
