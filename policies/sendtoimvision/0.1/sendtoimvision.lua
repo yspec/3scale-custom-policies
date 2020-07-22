@@ -221,9 +221,13 @@ function send_to_http_imv_server(payload)
   ngx.log(ngx.ERR, "sending...")
   --local imv_http_server_url = resty_env.get("aamp_scheme") .. "://".. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint")
   local imv_http_server_url = "http://54.237.99.160:5601/data"--.. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint")
-
+  local timeout = 60000
+  if self.timeout then
+    timeout = self.timeout
+  end
+  ngx.ctx.httpc:set_timeout(timeout)
   local imv_body = { }
-  local res, code, response_headers, status = ngx.ctx.httpc.request ({
+  local res, code, response_headers, status = ngx.ctx.httpc:request_uri(imv_http_server_url,{
     url = imv_http_server_url,
     method = "POST", --aamp_request_method,
     headers = {
@@ -231,9 +235,10 @@ function send_to_http_imv_server(payload)
       ["Content-Type"] = "application/json",
       ["Content-Length"] = payload:len()
     },
-    body = payload
+    body = payload,
     --body = source = ltn12.source.string(payload),
     --sink = ltn12.sink.table(imv_body)
+    keepalive = false
   })
   ngx.log(ngx.ERR,"os.getenv: " .. os.getenv(aamp_scheme) .. "://".. os.getenv(aamp_server_name) .. ":" .. os.getenv(aamp_server_port) .."/" .. os.getenv(aamp_endpoint))
   ngx.log(ngx.ERR,"resty_env.get: " .. resty_env.get(aamp_scheme) .. "://".. resty_env.get(aamp_server_name) .. ":" .. resty_env.get(aamp_server_port) .."/" .. resty_env.get(aamp_endpoint))
