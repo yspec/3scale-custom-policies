@@ -215,7 +215,7 @@ end
 
 function _M:balancer()
   ngx.log(ngx.ERR, "running balancer")
-  send_response_info_to_imv_server(status, headers_dict, full_body, ngx.ctx.message_id)
+  send_response_info_to_imv_server(ngx.ctx.res_status, ngx.ctx.res_headers, ngx.ctx.res_body, ngx.ctx.message_id)
   -- use for example require('resty.balancer.round_robin').call to do load balancing
 end
 
