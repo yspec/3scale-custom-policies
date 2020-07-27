@@ -205,12 +205,17 @@ function _M:log()
     ngx.ctx.message_id = 0
   end
 
-  send_response_info_to_imv_server(status, headers_dict, full_body, ngx.ctx.message_id)
+  ngx.ctx.res_status = status
+  ngx.ctx.res_headers = headers_dict
+  ngx.ctx.res_body = full_body
+  --send_response_info_to_imv_server(status, headers_dict, full_body, ngx.ctx.message_id)
   --send_to_tcp_imv_server(conf, full_response, 1, ngx.ctx.message_id)
   --close_tcp_connection()
 end
 
 function _M:balancer()
+  ngx.log(ngx.ERR, "running balancer")
+  send_response_info_to_imv_server(status, headers_dict, full_body, ngx.ctx.message_id)
   -- use for example require('resty.balancer.round_robin').call to do load balancing
 end
 
@@ -243,7 +248,8 @@ function send_response_info_to_imv_server(status_code, res_headers, res_body, me
   
   local body_json = cjson.encode(body_dict)
   ngx.log(ngx.ERR, "sending response message with body: " .. body_json)
-  local ok, err = ngx.timer.at(0, send_to_http_imv_server,body_json)
+  send_to_http_imv_server(false, body_json)
+  --local ok, err = ngx.timer.at(0, send_to_http_imv_server,body_json)
   --send_to_http_imv_server(body_json)
 end
 
