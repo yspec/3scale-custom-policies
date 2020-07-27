@@ -250,7 +250,11 @@ end
 function send_to_http_imv_server(premature, payload)
   ngx.log(ngx.ERR, "sending...")
   ngx.log(ngx.ERR, "payload: " .. payload)
-  ngx.log(ngx.ERR, "premature: " .. premature)
+  if premature then
+    ngx.log(ngx.ERR, "premature: true")
+  else
+    ngx.log(ngx.ERR, "premature: false")
+  end
   --local imv_http_server_url = resty_env.get("aamp_scheme") .. "://".. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint")
   local imv_http_server_url = "http://100.25.160.207:5601/data"--.. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint")
   local timeout = 60000
