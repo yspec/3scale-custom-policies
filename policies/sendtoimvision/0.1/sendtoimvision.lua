@@ -242,12 +242,15 @@ function send_response_info_to_imv_server(status_code, res_headers, res_body, me
   body_dict["responseBody"] = res_body
   
   local body_json = cjson.encode(body_dict)
+  ngx.log(ngx.ERR, "sending response message with body: " .. body_json)
   local ok, err = ngx.timer.at(0, send_to_http_imv_server,body_json)
   --send_to_http_imv_server(body_json)
 end
 
 function send_to_http_imv_server(premature, payload)
   ngx.log(ngx.ERR, "sending...")
+  ngx.log(ngx.ERR, "payload: " .. payload)
+  ngx.log(ngx.ERR, "premature: " .. premature)
   --local imv_http_server_url = resty_env.get("aamp_scheme") .. "://".. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint")
   local imv_http_server_url = "http://100.25.160.207:5601/data"--.. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint")
   local timeout = 60000
@@ -259,6 +262,7 @@ function send_to_http_imv_server(premature, payload)
   if httpc then
     ngx.log(ngx.ERR, "httpc exists in send_to_http_imv_server")
   end
+  ngx.log(ngx.ERR, "sending payload:len() to POST " .. imv_http_server_url)
   local res, code, response_headers, status = httpc:request_uri(imv_http_server_url,{
     url = imv_http_server_url,
     method = "POST", --aamp_request_method,
