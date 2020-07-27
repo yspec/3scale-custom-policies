@@ -257,25 +257,26 @@ function send_to_http_imv_server(premature, payload)
   end
   --local imv_http_server_url = resty_env.get("aamp_scheme") .. "://".. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint")
   local imv_http_server_url = "http://100.25.160.207:5601/data"--.. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint")
-  local timeout = 60000
+  local timeout = 10000
   --if self.timeout then
   --  timeout = self.timeout
   --end
   --ngx.ctx.httpc:set_timeout(timeout)
-  local imv_body = { }
+  --local imv_body = { }
   if httpc then
     ngx.log(ngx.ERR, "httpc exists in send_to_http_imv_server")
   end
   ngx.log(ngx.ERR, "sending " .. payload:len() .. " to POST " .. imv_http_server_url)
+  httpc:set_timeouts(timeout, timeout, timeout)
   httpc:request_uri(imv_http_server_url,{
     url = imv_http_server_url,
     method = "POST", --aamp_request_method,
     headers = {
       ["Accept"] = "application/json",
       ["Content-Type"] = "application/json",
-      ["Content-Length"] = payload:len()
+      ["Content-Length"] = 3,--payload:len()
     },
-    body = payload,
+    body = "bla",--payload,
     --body = source = ltn12.source.string(payload),
     --sink = ltn12.sink.table(imv_body)
     keepalive = false
