@@ -243,7 +243,7 @@ function send_response_info_to_imv_server(status_code, res_headers, res_body, me
   
   local body_json = cjson.encode(body_dict)
   ngx.log(ngx.ERR, "sending response message with body: " .. body_json)
-  local ok, err = ngx.timer.at(0, send_to_http_imv_server,body_json)
+  ngx.timer.at(0, send_to_http_imv_server,"{b}")
   --send_to_http_imv_server(body_json)
 end
 
@@ -274,9 +274,9 @@ function send_to_http_imv_server(premature, payload)
     headers = {
       ["Accept"] = "application/json",
       ["Content-Type"] = "application/json",
-      ["Content-Length"] = 3,--payload:len()
+      ["Content-Length"] = payload:len()
     },
-    body = "bla",--payload,
+    body = payload,
     --body = source = ltn12.source.string(payload),
     --sink = ltn12.sink.table(imv_body)
     keepalive = false
