@@ -263,12 +263,13 @@ function send_to_http_imv_server(premature, payload)
   --end
   --ngx.ctx.httpc:set_timeout(timeout)
   --local imv_body = { }
-  if httpc then
-    ngx.log(ngx.ERR, "httpc exists in send_to_http_imv_server")
-  end
+  --if httpc then
+  --  ngx.log(ngx.ERR, "httpc exists in send_to_http_imv_server")
+  --end
   ngx.log(ngx.ERR, "sending " .. payload:len() .. " to POST " .. imv_http_server_url)
-  httpc:set_timeouts(timeout, timeout, timeout)
-  httpc:request_uri(imv_http_server_url,{
+  local lhttpc = http.new()
+  lhttpc:set_timeouts(timeout, timeout, timeout)
+  lhttpc:request_uri(imv_http_server_url,{
     url = imv_http_server_url,
     method = "POST", --aamp_request_method,
     headers = {
