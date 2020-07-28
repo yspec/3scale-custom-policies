@@ -19,6 +19,7 @@ function _M.new(configuration)
     ngx.log(ngx.ERR, config.timeout)
   else
     ngx.log(ngx.ERR, "config.timeout is nil")
+  end
   --httpc = http.new()
   return self
 end
