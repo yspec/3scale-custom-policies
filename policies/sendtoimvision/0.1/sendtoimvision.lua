@@ -13,7 +13,7 @@ function _M.new(configuration)
   --self.enabled = config.enabled or {}
   self.timeout = config.timeout or {}
   for k, v in pairs(self) do
-    ngx.log(ngx.ERR, k .. ": " .. v)
+    ngx.log(ngx.ERR, k)
   end
   if config.timeout ~= nil then
     ngx.log(ngx.ERR, config.timeout)
