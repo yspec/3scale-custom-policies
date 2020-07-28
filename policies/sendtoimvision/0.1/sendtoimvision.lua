@@ -6,15 +6,19 @@ http = require("resty.resolver.http")
 cjson = require 'cjson'
 resty_env = require 'resty.env'
 
-function _M.new(config)
+function _M.new(configuration)
   --ngx.log(ngx.ERR, "running new")
   self = setmetatable({}, mt)
-  self.enabled = config.enabled
-  self.timeout = config.timeout
+  local config = configuration or {}
+  --self.enabled = config.enabled or {}
+  self.timeout = config.timeout or {}
   for k, v in pairs(self) do
     ngx.log(ngx.ERR, k .. ": " .. v)
   end
-  --ngx.log(ngx.ERR, config.timeout)
+  if config.timeout ~= nil then
+    ngx.log(ngx.ERR, config.timeout)
+  else
+    ngx.log(ngx.ERR, "config.timeout is nil")
   --httpc = http.new()
   return self
 end
