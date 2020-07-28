@@ -153,8 +153,8 @@ function _M:log()
   end
 
   if (ngx.ctx.message_id == 0 or ngx.ctx.message_id == nil) then
-    ngx.log(ngx.ERR, "Got response without request, sending with message id 0!!!")
-    ngx.ctx.message_id = 0
+    ngx.log(ngx.ERR, "Got response without request, dropping message!!!")
+    --ngx.ctx.message_id = 0
     return
   end
 
