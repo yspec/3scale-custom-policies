@@ -212,7 +212,7 @@ function send_to_http_imv_server(premature, payload)
 
   local timeout = 10000
   if self.timeout then
-    timeout = self.timeout
+    timeout = self.timeout*1000
   end
   --ngx.log(ngx.ERR, "sending " .. payload:len() .. " to POST " .. imv_http_server_url)
   local lhttpc = http.new()
