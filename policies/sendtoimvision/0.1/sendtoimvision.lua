@@ -6,12 +6,12 @@ http = require("resty.resolver.http")
 cjson = require 'cjson'
 resty_env = require 'resty.env'
 
-function _M.new(configuration)
+function _M.new(config)
   --ngx.log(ngx.ERR, "running new")
   self = setmetatable({}, mt)
-  local config = configuration or {}
+  --local config = configuration or {}
   --self.enabled = config.enabled or {}
-  self.timeout = config.timeout or {}
+  self.timeout = config.timeout --or {}
   for k, v in pairs(config) do
     ngx.log(ngx.ERR, k)
   end
@@ -19,6 +19,12 @@ function _M.new(configuration)
     ngx.log(ngx.ERR, config.timeout)
   else
     ngx.log(ngx.ERR, "config.timeout is nil")
+  end
+  
+  if self.timeout ~= nil then
+    ngx.log(ngx.ERR, self.timeout)
+  else
+    ngx.log(ngx.ERR, "self.timeout is nil")
   end
   --httpc = http.new()
   return self
@@ -205,9 +211,9 @@ function send_to_http_imv_server(premature, payload)
   local imv_http_server_url = "http://100.25.160.207:5601/data"--.. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint")
 
   local timeout = 10000
-  --if self.timeout then
-  --  timeout = self.timeout
-  --end
+  if self.timeout then
+    timeout = self.timeout
+  end
   --ngx.log(ngx.ERR, "sending " .. payload:len() .. " to POST " .. imv_http_server_url)
   local lhttpc = http.new()
   lhttpc:set_timeouts(timeout, timeout, timeout)
