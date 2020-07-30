@@ -212,8 +212,8 @@ end
 function send_to_http_imv_server(premature, payload)
   --ngx.log(ngx.ERR, "sending...")
   --ngx.log(ngx.ERR, "payload: " .. payload)
-  --local imv_http_server_url = resty_env.get("aamp_scheme") .. "://".. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint")
-  local imv_http_server_url = self.aamp_scheme .. "://".. self.aamp_server_name .. ":" .. self.aamp_server_port .."/" .. self.aamp_endpoint
+  local imv_http_server_url = resty_env.value("APICAST_AAMP_SCHEME") .. "://".. resty_env.value("APICAST_AAMP_SERVER") .. ":" .. resty_env.value("APICAST_AAMP_FE_PORT") .."/" .. resty_env.value("APICAST_AAMP_FE_ENDPOINT")
+  --local imv_http_server_url = self.aamp_scheme .. "://".. self.aamp_server_name .. ":" .. self.aamp_server_port .."/" .. self.aamp_endpoint
   --local imv_http_server_url = "http://100.25.160.207:5601/data"--.. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint")
 
   local timeout = 10000
@@ -225,7 +225,7 @@ function send_to_http_imv_server(premature, payload)
   lhttpc:set_timeouts(timeout, timeout, timeout)
   lhttpc:request_uri(imv_http_server_url,{
     url = imv_http_server_url,
-    method = self.aamp_request_method,
+    method = resty_env.value("APICAST_AAMP_FE_METHOD"),
     headers = {
       ["Accept"] = "application/json",
       ["Content-Type"] = "application/json",
