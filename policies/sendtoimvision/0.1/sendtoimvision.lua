@@ -7,31 +7,16 @@ cjson = require 'cjson'
 resty_env = require 'resty.env'
 
 function _M.new(config)
-  --ngx.log(ngx.ERR, "running new")
   self = setmetatable({}, mt)
   --local config = configuration or {}
   --self.enabled = config.enabled or {}
   self.timeout = config.timeout --or {}
-  self.aamp_scheme = config.aamp_scheme --or {}
-  self.aamp_server_port = config.aamp_server_port --or {}
-  self.aamp_endpoint = config.aamp_endpoint --or {}
-  self.aamp_request_method = config.aamp_request_method --or {}
-  self.aamp_server_name = config.aamp_server_name --or {}
-  for k, v in pairs(config) do
-    ngx.log(ngx.ERR, k)
-  end
-  if config.timeout ~= nil then
-    ngx.log(ngx.ERR, config.timeout)
-  else
-    ngx.log(ngx.ERR, "config.timeout is nil")
-  end
-  
-  if self.timeout ~= nil then
-    ngx.log(ngx.ERR, self.timeout)
-  else
-    ngx.log(ngx.ERR, "self.timeout is nil")
-  end
-  --httpc = http.new()
+  --self.aamp_scheme = config.aamp_scheme --or {}
+  --self.aamp_server_port = config.aamp_server_port --or {}
+  --self.aamp_endpoint = config.aamp_endpoint --or {}
+  --self.aamp_request_method = config.aamp_request_method --or {}
+  --self.aamp_server_name = config.aamp_server_name --or {}
+
   return self
 end
 
@@ -49,14 +34,6 @@ end
 
 function _M:access()
   -- ability to deny the request before it is sent upstream
-  --ngx.log(ngx.ERR, "running access")
-  --for k, v in pairs(resty_env.list()) do
-  --  ngx.log(ngx.ERR, k .. ": " .. v)
-  --end
-  --if ngx.ctx.enabled ~= "true" then
-  --  ngx.log(ngx.ERR, "config.enabled (" .. ngx.ctx.enabled .. ") != true!")
-  --  return
-  --end
   
   ngx.ctx.client = nil
   ngx.ctx.message_id = 0
@@ -66,7 +43,7 @@ function _M:access()
 
   math.randomseed(seed())
   ngx.ctx.message_id = math.floor(math.random () * 10000000000000 + seed() * 10000)
-  --ngx.log(ngx.ERR, "message ID: " .. tostring(ngx.ctx.message_id) .. " time: " .. tostring(socket.gettime()) .. " random: ".. tostring(math.random ()))
+  --ngx.log(ngx.INFO, "message ID: " .. tostring(ngx.ctx.message_id) .. " time: " .. tostring(socket.gettime()) .. " random: ".. tostring(math.random ()))
 
   -- getting all the request data can be gathered from the 'access' function
 
@@ -127,18 +104,12 @@ function _M:body_filter()
     ngx.ctx.response_body = ngx.ctx.response_body .. (chunk or "")
   else
     ngx.ctx.response_body = (chunk or "")
-    --ngx.log(ngx.ERR,"no ctx.response_body in body_filter, only writing chunk:" .. ngx.ctx.response_body)
+    --ngx.log(ngx.INFO,"no ctx.response_body in body_filter, only writing chunk.")
   end
 end
 
 function _M:log()
   -- can do extra logging
-  ngx.log(ngx.ERR, "running log")
-
-  --if ngx.ctx.enabled ~= "true" then
-  --  return
-  --end
-  
   -- getting the response data from 'log', saving everything and sending to imv server
   local status = ngx.status
   --local headers = ngx.header
@@ -164,14 +135,12 @@ function _M:log()
   end
 
   if (ngx.ctx.message_id == 0 or ngx.ctx.message_id == nil) then
-    ngx.log(ngx.ERR, "Got response without request, dropping message!!!")
+    ngx.log(ngx.WARN, "Got response without request, dropping message!!!")
     --ngx.ctx.message_id = 0
     return
   end
 
   send_response_info_to_imv_server(status, headers_dict, full_body, ngx.ctx.message_id)
-  --send_to_tcp_imv_server(conf, full_response, 1, ngx.ctx.message_id)
-  --close_tcp_connection()
 end
 
 function _M:balancer()
@@ -179,7 +148,6 @@ function _M:balancer()
 end
 
 function send_request_info_to_imv_server(method, url, req_headers, req_body, message_id)
-  --ngx.log(ngx.ERR, "send_request")
   local body_dict = {}
   body_dict["requestTimestamp"] = get_time()
   body_dict["transactionId"] = message_id
@@ -195,7 +163,6 @@ function send_request_info_to_imv_server(method, url, req_headers, req_body, mes
 end
 
 function send_response_info_to_imv_server(status_code, res_headers, res_body, message_id)
-  --ngx.log(ngx.ERR, "send_respones")
   local body_dict = {}
   body_dict["responseTimestamp"] = get_time()
   body_dict["transactionId"] = message_id
@@ -204,14 +171,11 @@ function send_response_info_to_imv_server(status_code, res_headers, res_body, me
   body_dict["responseBody"] = res_body
   
   local body_json = cjson.encode(body_dict)
-  --ngx.log(ngx.ERR, "sending response message with body: " .. body_json)
   ngx.timer.at(0, send_to_http_imv_server,body_json)
   --send_to_http_imv_server(body_json)
 end
 
 function send_to_http_imv_server(premature, payload)
-  --ngx.log(ngx.ERR, "sending...")
-  --ngx.log(ngx.ERR, "payload: " .. payload)
   local imv_http_server_url = resty_env.value("APICAST_AAMP_SCHEME") .. "://".. resty_env.value("APICAST_AAMP_SERVER") .. ":" .. resty_env.value("APICAST_AAMP_FE_PORT") .."/" .. resty_env.value("APICAST_AAMP_FE_ENDPOINT")
   --local imv_http_server_url = self.aamp_scheme .. "://".. self.aamp_server_name .. ":" .. self.aamp_server_port .."/" .. self.aamp_endpoint
   --local imv_http_server_url = "http://100.25.160.207:5601/data"--.. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint")
@@ -220,7 +184,7 @@ function send_to_http_imv_server(premature, payload)
   if self.timeout then
     timeout = self.timeout*1000
   end
-  --ngx.log(ngx.ERR, "sending " .. payload:len() .. " to POST " .. imv_http_server_url)
+
   local lhttpc = http.new()
   lhttpc:set_timeouts(timeout, timeout, timeout)
   lhttpc:request_uri(imv_http_server_url,{
@@ -236,72 +200,8 @@ function send_to_http_imv_server(premature, payload)
     --sink = ltn12.sink.table(imv_body)
     keepalive = false
   })
-  --ngx.log(ngx.ERR,"os.getenv: " .. os.getenv("aamp_scheme") .. "://".. os.getenv("aamp_server_name") .. ":" .. os.getenv("aamp_server_port") .."/" .. os.getenv("aamp_endpoint"))
-  --ngx.log(ngx.ERR,"resty_env.get: " .. resty_env.get("aamp_scheme") .. "://".. resty_env.get("aamp_server_name") .. ":" .. resty_env.get("aamp_server_port") .."/" .. resty_env.get("aamp_endpoint"))
-  --ngx.log(ngx.ERR,"resty_env.value: " .. resty_env.value("aamp_scheme") .. "://".. resty_env.value("aamp_server_name") .. ":" .. resty_env.value("aamp_server_port") .."/" .. resty_env.value("aamp_endpoint"))
-  --ngx.log(ngx.ERR,"res: " .. res)-- .. ". code: " .. code)
-  --ngx.log(ngx.NOTICE, "version: "..tostring(version)..", ts: "..tostring(ts)..", opcode: "..tostring(opcode)..", len: "..tostring(payload:len())..", message_id: "..tostring(message_id))
+ 
 end
-
---function send_to_tcp_imv_server(conf, payload, opcode, message_id)
---    local client = get_tcp_connection(conf.host, conf.port)
---    if client == nil then
---        ngx.log(ngx.ERR, "Can't send data to ".. tostring(conf.host) .. ":" .. conf.port)
---        return
---    end
-
---    local data = ""
---    local version = 1
---    local ts = math.floor(socket.gettime() * 1000)
---    local total_len = payload:len()+1+1+4+4+8+8
-
-    --converting manually in lua 5.l
---    data = write_format(true, "114488", version, opcode, total_len, 0, message_id, ts)
---    data = data .. payload
-
---    client:send(data)
-
-    --ngx.log(ngx.NOTICE, "------------------ START DATA -----------------")
-    --ngx.log(ngx.NOTICE, payload)
-    --ngx.log(ngx.NOTICE, "****************** END DATA *******************")
---    ngx.log(ngx.NOTICE, "version: "..tostring(version)..", ts: "..tostring(ts)..", opcode: "..tostring(opcode)..", message_id: "..tostring(message_id)..", len: "..tostring(total_len))
---end
-
---function get_tcp_connection(host, port)
---    if ngx.ctx.client == nil then
---        ngx.ctx.client = socket.connect(host, port)
---        if ngx.ctx.client == nil then
---            return nil
---        end
---    end
---    return ngx.ctx.client
---end
-
---function close_tcp_connection()
---    if ngx.ctx.client ~= nil then
---        ngx.ctx.client:shutdown("both")
---        ngx.ctx.client = nil
---    end
---end
-
---function write_format(little_endian, format, ...)
---    local res = ''
---    local values = {...}
---    for i=1,#format do
---        local size = tonumber(format:sub(i,i))
---        local value = values[i]
---        local str = ""
---        for j=1,size do
---            str = str .. string.char(value % 256)
---            value = math.floor(value / 256)
---        end
---        if not little_endian then
---            str = string.reverse(str)
---        end
---        res = res .. str
---    end
---    return res
---end
 
 function seed()
 --  if package.loaded['socket'] and package.loaded['socket'].gettime then
